@@ -1,0 +1,43 @@
+ahora este prompt, de manera corta y precisa tomando en cuenta que estamos sobre el hilo de una conversacion.
+
+segun el proyecto actual, en el menu tenemos 2 opciones al momentos 1 "Autotramite" y 2 "Habilitacion Tag" , esta la 1 ya funcional. en "Habilitacion Tag"  quiero lograr lo siguiente, siendo este un flujo separado del 1.
+
+en la carpeta /docs/tag/PDF-EJEMPLO.pdf esta ese documento el que me sirve para llenar con datos cliente e imprimir. pasa que es tedioso estarlo buscando abriendo y llenando, asi que quiero buscar una manera de simplificarlo asi como hicimos con autotramite.
+
+en este caso dicho PDF es editable, y los campos que contiene para llenado son:
+CAMPO1 : dia del mes entre 01 - 31 ej [04]
+CAMPO2: mes de Enero - Diciembre ej [FEBRERO]
+CAMPO3:  AÑO EJ [2026]
+CAMPO4: NOMBRE COMPLETO EJ [DENNYS EDUARDO PARRA]
+CAMPO5: RUT DEL CLIENTE BIEN SEA XX.XXX.XXX-X O XXXXXXXX-X
+CAMPO6: PUEDE QUEDAR VACIO SI NO DOY DATO
+
+[Para la direccion se tiene que dividir en 3, "Av. las condes 12461, las condes. santiago." ej ]
+CAMPO7:  DIRECCION parte 1 [Av. las condes 12461]
+
+CAMPO8: DIRECCION PARTE 2 COMUNA [las condes]
+CAMPO9: DIRECCION PARTE 3 CIUDAD [santiago]
+CAMPO10: SE PUEDE RECIBIR (+56912345678 O 912345678) Y PASAR A ESTE FORMATO EN PDF FORMATO [912345678]
+
+[MAIL SE DIVIDE EN 2 EJ "DENNYS744@GMAIL.COM", EL @ SE ENCUENTRAENTRE ESOS 2 CAMPOS POR ESO NO LO COLOCO ]
+CAMPO11:  MAIL PARTE 1 [DENNYS744]
+CAMPO12: MAIL PARTE 2 [GMAIL.COM]
+
+CAMPO13: TAG ASIGNADO EJ [123456789]
+CAMPO14: PATENTE DEL AUTO, SE PUEDE RECIBIR EN AMBOS FORMATOS (KRTY.11-3, KRTY11-3 ) PERO SIEMPRE LLENAR CON EL FORMATO [KRTY11-3]
+CAMPO15: PATENTE DEL AUTO, SE PUEDE RECIBIR EN AMBOS FORMATOS (KRTY.11-3, KRTY11-3 ) PERO SIEMPRE LLENAR CON EL FORMATO [KRTY11-3]
+CAMPO16: FIRMA, NO HACE FALTA LLENAR.
+
+mi intencion es de la misma manera colocar en un textarea los datos similares a :
+Nombre: MARIO HUMBERTO VERA VALENCIA
+
+RUT: 10759120-6
+
+Direccion: CALLE CHUQUICAMATA 814, LA CALERA.
+
+Telefono: 977583559
+
+Correo: Mario.vera@cencocal.cl
+
+PATENTE: KYTR.55-5
+TAG

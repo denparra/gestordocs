@@ -1,0 +1,12 @@
+Nombre: CARLOS VIVIANO VERA velez
+
+RUT: 22.259.120-6
+
+Direccion: PUENTE CHUQUICAMATA 814, LA CALERA.
+
+Telefono: 911111111
+
+Correo: juan.vera@cencocal.cl
+
+PATENTE: TRYU.55-4
+TAG 111258369

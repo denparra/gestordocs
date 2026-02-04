@@ -1,0 +1,371 @@
+2026-02-04 11:43:08 - src.autotramite - INFO - Iniciando creación de contrato | {'patente': 'DRLZ16', 'dry_run': True}
+2026-02-04 11:43:09 - src.autotramite - INFO - Iniciando login en AutoTramite
+2026-02-04 11:43:16 - src.autotramite - INFO - Login exitoso | {'url_destino': 'https://autotramite.cl/secciones/index.php'}
+2026-02-04 11:43:16 - src.autotramite - INFO - Llenando formulario de contrato | {'patente': 'DRLZ16', 'vendedor_rut': '26.0****', 'comprador_rut': '26.0****'}
+2026-02-04 11:43:35 - src.autotramite - INFO - Formulario llenado completamente
+2026-02-04 11:43:35 - src.autotramite - INFO - Previsualizando contrato (dry_run=True)
+2026-02-04 11:43:35 - src.autotramite - INFO - Esperando generación del PDF...
+2026-02-04 11:43:40 - src.autotramite - INFO - Screenshot guardado: C:\Users\denny\OneDrive\Documentos\PRACTICAS\PYTHON\Streamlit\BOTH\n8n\projects\gestordocs\autotramite_py_mvp\screenshots\preview_DRLZ16_20260204_114308.png
+2026-02-04 11:43:40 - src.autotramite - INFO - Modo dry-run: NO se registrará el contrato
+2026-02-04 11:43:40 - src.autotramite - INFO - Operación completada exitosamente | {'duracion_segundos': 31.7, 'operacion_id': None}
+2026-02-04 11:47:44 - src.autotramite - INFO - Iniciando creación de contrato | {'patente': 'DRLZ16', 'dry_run': True}
+2026-02-04 11:47:45 - src.autotramite - INFO - Iniciando login en AutoTramite
+2026-02-04 11:47:53 - src.autotramite - INFO - Login exitoso | {'url_destino': 'https://autotramite.cl/secciones/index.php'}
+2026-02-04 11:47:53 - src.autotramite - INFO - Llenando formulario de contrato | {'patente': 'DRLZ16', 'vendedor_rut': '26.0****', 'comprador_rut': '26.0****'}
+2026-02-04 11:48:57 - src.autotramite - INFO - Formulario llenado completamente
+2026-02-04 11:48:57 - src.autotramite - INFO - Previsualizando contrato (dry_run=True)
+2026-02-04 11:48:58 - src.autotramite - INFO - Esperando generación del PDF...
+2026-02-04 11:49:03 - src.autotramite - INFO - Screenshot guardado: C:\Users\denny\OneDrive\Documentos\PRACTICAS\PYTHON\Streamlit\BOTH\n8n\projects\gestordocs\autotramite_py_mvp\screenshots\preview_DRLZ16_20260204_114744.png
+2026-02-04 11:49:03 - src.autotramite - INFO - Modo dry-run: NO se registrará el contrato
+2026-02-04 11:49:03 - src.autotramite - INFO - Operación completada exitosamente | {'duracion_segundos': 78.91, 'operacion_id': None}
+2026-02-04 11:52:18 - src.autotramite - INFO - Iniciando creación de contrato | {'patente': 'DRLZ16', 'dry_run': True}
+2026-02-04 11:52:18 - src.autotramite - INFO - Iniciando login en AutoTramite
+2026-02-04 11:52:26 - src.autotramite - INFO - Login exitoso | {'url_destino': 'https://autotramite.cl/secciones/index.php'}
+2026-02-04 11:52:26 - src.autotramite - INFO - Llenando formulario de contrato | {'patente': 'DRLZ16', 'vendedor_rut': '26.0****', 'comprador_rut': '26.0****'}
+2026-02-04 11:53:04 - src.autotramite - INFO - Formulario llenado completamente
+2026-02-04 11:53:04 - src.autotramite - INFO - Previsualizando contrato (dry_run=True)
+2026-02-04 11:53:04 - src.autotramite - INFO - Esperando generación del PDF...
+2026-02-04 11:53:10 - src.autotramite - INFO - Screenshot guardado: C:\Users\denny\OneDrive\Documentos\PRACTICAS\PYTHON\Streamlit\BOTH\n8n\projects\gestordocs\autotramite_py_mvp\screenshots\preview_DRLZ16_20260204_115218.png
+2026-02-04 11:53:10 - src.autotramite - INFO - Modo dry-run: NO se registrará el contrato
+2026-02-04 11:53:10 - src.autotramite - INFO - Operación completada exitosamente | {'duracion_segundos': 51.94, 'operacion_id': None}
+2026-02-04 12:05:05 - src.autotramite - INFO - Iniciando creación de contrato | {'patente': 'DRLZ16', 'dry_run': True}
+2026-02-04 12:05:06 - src.autotramite - INFO - Iniciando login en AutoTramite
+2026-02-04 12:05:11 - src.autotramite - INFO - Login exitoso | {'url_destino': 'https://autotramite.cl/secciones/index.php'}
+2026-02-04 12:05:11 - src.autotramite - INFO - Llenando formulario de contrato | {'patente': 'DRLZ16', 'vendedor_rut': '26.0****', 'comprador_rut': '26.0****'}
+2026-02-04 12:05:47 - src.autotramite - INFO - Formulario llenado completamente
+2026-02-04 12:05:47 - src.autotramite - INFO - Previsualizando contrato (dry_run=True)
+2026-02-04 12:05:47 - src.autotramite - WARNING - Intento 1/3 fallido. Reintentando en 2000ms...
+2026-02-04 12:05:49 - src.autotramite - INFO - Previsualizando contrato (dry_run=True)
+2026-02-04 12:05:49 - src.autotramite - WARNING - Intento 2/3 fallido. Reintentando en 4000ms...
+2026-02-04 12:05:53 - src.autotramite - INFO - Previsualizando contrato (dry_run=True)
+2026-02-04 12:05:53 - src.autotramite - ERROR - Todos los intentos agotados (3)
+2026-02-04 12:05:53 - src.autotramite - ERROR - Error en operación: Error en previsualizacion/registro: 'Page' object has no attribute 'wait_for_response' | {'duracion_segundos': 47.96}
+2026-02-04 12:07:26 - src.autotramite - INFO - Iniciando creación de contrato | {'patente': 'DRLZ16', 'dry_run': True}
+2026-02-04 12:07:27 - src.autotramite - INFO - Iniciando login en AutoTramite
+2026-02-04 12:07:37 - src.autotramite - INFO - Login exitoso | {'url_destino': 'https://autotramite.cl/secciones/index.php'}
+2026-02-04 12:07:37 - src.autotramite - INFO - Llenando formulario de contrato | {'patente': 'DRLZ16', 'vendedor_rut': '26.0****', 'comprador_rut': '26.0****'}
+2026-02-04 12:08:41 - src.autotramite - INFO - Formulario llenado completamente
+2026-02-04 12:08:41 - src.autotramite - INFO - Previsualizando contrato (dry_run=True)
+2026-02-04 12:08:41 - src.autotramite - WARNING - Intento 1/3 fallido. Reintentando en 2000ms...
+2026-02-04 12:08:43 - src.autotramite - INFO - Previsualizando contrato (dry_run=True)
+2026-02-04 12:08:43 - src.autotramite - WARNING - Intento 2/3 fallido. Reintentando en 4000ms...
+2026-02-04 12:08:47 - src.autotramite - INFO - Previsualizando contrato (dry_run=True)
+2026-02-04 12:08:47 - src.autotramite - ERROR - Todos los intentos agotados (3)
+2026-02-04 12:08:47 - src.autotramite - ERROR - Error en operación: Error en previsualizacion/registro: 'Page' object has no attribute 'wait_for_response' | {'duracion_segundos': 81.14}
+2026-02-04 12:10:05 - src.autotramite - INFO - Iniciando creación de contrato | {'patente': 'DRLZ16', 'dry_run': True}
+2026-02-04 12:10:05 - src.autotramite - INFO - Iniciando login en AutoTramite
+2026-02-04 12:10:13 - src.autotramite - INFO - Login exitoso | {'url_destino': 'https://autotramite.cl/secciones/index.php'}
+2026-02-04 12:10:13 - src.autotramite - INFO - Llenando formulario de contrato | {'patente': 'DRLZ16', 'vendedor_rut': '26.0****', 'comprador_rut': '26.0****'}
+2026-02-04 12:11:16 - src.autotramite - INFO - Formulario llenado completamente
+2026-02-04 12:11:16 - src.autotramite - INFO - Previsualizando contrato (dry_run=True)
+2026-02-04 12:11:16 - src.autotramite - WARNING - Intento 1/3 fallido. Reintentando en 2000ms...
+2026-02-04 12:11:18 - src.autotramite - INFO - Previsualizando contrato (dry_run=True)
+2026-02-04 12:11:18 - src.autotramite - WARNING - Intento 2/3 fallido. Reintentando en 4000ms...
+2026-02-04 12:11:22 - src.autotramite - INFO - Previsualizando contrato (dry_run=True)
+2026-02-04 12:11:22 - src.autotramite - ERROR - Todos los intentos agotados (3)
+2026-02-04 12:11:22 - src.autotramite - ERROR - Error en operación: Error en previsualizacion/registro: 'Page' object has no attribute 'wait_for_response' | {'duracion_segundos': 77.41}
+2026-02-04 12:25:55 - src.autotramite - INFO - Iniciando creación de contrato | {'patente': 'DRLZ16', 'dry_run': True}
+2026-02-04 12:25:56 - src.autotramite - INFO - Iniciando login en AutoTramite
+2026-02-04 12:26:03 - src.autotramite - INFO - Login exitoso | {'url_destino': 'https://autotramite.cl/secciones/index.php'}
+2026-02-04 12:26:03 - src.autotramite - INFO - Llenando formulario de contrato | {'patente': 'DRLZ16', 'vendedor_rut': '26.0****', 'comprador_rut': '26.0****'}
+2026-02-04 12:27:07 - src.autotramite - INFO - Formulario llenado completamente
+2026-02-04 12:27:07 - src.autotramite - INFO - Previsualizando contrato (dry_run=True)
+2026-02-04 12:27:07 - src.autotramite - INFO - Esperando generacion del PDF...
+2026-02-04 12:27:13 - src.autotramite - INFO - PDF guardado: C:\Users\denny\OneDrive\Documentos\PRACTICAS\PYTHON\Streamlit\BOTH\n8n\projects\gestordocs\autotramite_py_mvp\screenshots\preview_DRLZ16_20260204_122555.pdf
+2026-02-04 12:27:13 - src.autotramite - INFO - Modo dry-run: NO se registrara el contrato
+2026-02-04 12:27:13 - src.autotramite - INFO - Operación completada exitosamente | {'duracion_segundos': 77.37, 'operacion_id': None}
+2026-02-04 12:28:02 - src.autotramite - INFO - Iniciando creación de contrato | {'patente': 'DRLZ16', 'dry_run': True}
+2026-02-04 12:28:03 - src.autotramite - INFO - Iniciando login en AutoTramite
+2026-02-04 12:28:13 - src.autotramite - INFO - Login exitoso | {'url_destino': 'https://autotramite.cl/secciones/index.php'}
+2026-02-04 12:28:13 - src.autotramite - INFO - Llenando formulario de contrato | {'patente': 'DRLZ16', 'vendedor_rut': '26.0****', 'comprador_rut': '26.0****'}
+2026-02-04 12:29:17 - src.autotramite - INFO - Formulario llenado completamente
+2026-02-04 12:29:17 - src.autotramite - INFO - Previsualizando contrato (dry_run=True)
+2026-02-04 12:29:47 - src.autotramite - WARNING - No se detecto respuesta PDF en la previsualizacion
+2026-02-04 12:29:47 - src.autotramite - INFO - Esperando generacion del PDF...
+2026-02-04 12:29:52 - src.autotramite - WARNING - Error descargando PDF: APIRequestContext.get: Invalid URL
+2026-02-04 12:29:52 - src.autotramite - INFO - Modo dry-run: NO se registrara el contrato
+2026-02-04 12:29:52 - src.autotramite - INFO - Operación completada exitosamente | {'duracion_segundos': 110.18, 'operacion_id': None}
+2026-02-04 12:30:52 - src.autotramite - INFO - Iniciando creación de contrato | {'patente': 'DRLZ16', 'dry_run': True}
+2026-02-04 12:30:52 - src.autotramite - INFO - Iniciando login en AutoTramite
+2026-02-04 12:31:00 - src.autotramite - INFO - Login exitoso | {'url_destino': 'https://autotramite.cl/secciones/index.php'}
+2026-02-04 12:31:00 - src.autotramite - INFO - Llenando formulario de contrato | {'patente': 'DRLZ16', 'vendedor_rut': '26.0****', 'comprador_rut': '26.0****'}
+2026-02-04 12:32:03 - src.autotramite - INFO - Formulario llenado completamente
+2026-02-04 12:32:03 - src.autotramite - INFO - Previsualizando contrato (dry_run=True)
+2026-02-04 12:32:04 - src.autotramite - INFO - Esperando generacion del PDF...
+2026-02-04 12:32:09 - src.autotramite - INFO - PDF guardado: C:\Users\denny\OneDrive\Documentos\PRACTICAS\PYTHON\Streamlit\BOTH\n8n\projects\gestordocs\autotramite_py_mvp\screenshots\preview_DRLZ16_20260204_123052.pdf
+2026-02-04 12:32:09 - src.autotramite - INFO - Modo dry-run: NO se registrara el contrato
+2026-02-04 12:32:09 - src.autotramite - INFO - Operación completada exitosamente | {'duracion_segundos': 77.33, 'operacion_id': None}
+2026-02-04 12:37:31 - src.autotramite - INFO - Iniciando creación de contrato | {'patente': 'DRLZ16', 'dry_run': True}
+2026-02-04 12:45:23 - src.autotramite - INFO - Iniciando creación de contrato | {'patente': 'DRLZ16', 'dry_run': True}
+2026-02-04 12:45:24 - src.autotramite - INFO - Iniciando login en AutoTramite
+2026-02-04 12:45:34 - src.autotramite - INFO - Login exitoso | {'url_destino': 'https://autotramite.cl/secciones/index.php'}
+2026-02-04 12:45:34 - src.autotramite - INFO - Llenando formulario de contrato | {'patente': 'DRLZ16', 'vendedor_rut': '26.0****', 'comprador_rut': '26.0****'}
+2026-02-04 12:46:39 - src.autotramite - INFO - Formulario llenado completamente
+2026-02-04 12:46:39 - src.autotramite - INFO - Previsualizando contrato (dry_run=True)
+2026-02-04 12:47:09 - src.autotramite - WARNING - No se detecto respuesta PDF en la previsualizacion
+2026-02-04 12:47:09 - src.autotramite - INFO - Esperando generacion del PDF...
+2026-02-04 12:47:14 - src.autotramite - WARNING - Error descargando PDF: APIRequestContext.get: Invalid URL
+2026-02-04 12:47:14 - src.autotramite - INFO - Modo dry-run: NO se registrara el contrato
+2026-02-04 12:47:14 - src.autotramite - INFO - Operación completada exitosamente | {'duracion_segundos': 110.79, 'operacion_id': None}
+2026-02-04 13:01:49 - src.autotramite - INFO - Iniciando creación de contrato | {'patente': 'DRLZ16', 'dry_run': True}
+2026-02-04 13:01:49 - src.autotramite - INFO - Iniciando login en AutoTramite
+2026-02-04 13:01:57 - src.autotramite - INFO - Login exitoso | {'url_destino': 'https://autotramite.cl/secciones/index.php'}
+2026-02-04 13:01:57 - src.autotramite - INFO - Llenando formulario de contrato | {'patente': 'DRLZ16', 'vendedor_rut': '26.0****', 'comprador_rut': '26.0****'}
+2026-02-04 13:03:01 - src.autotramite - INFO - Formulario llenado completamente
+2026-02-04 13:03:01 - src.autotramite - INFO - Previsualizando contrato (dry_run=True)
+2026-02-04 13:03:02 - src.autotramite - INFO - Esperando generacion del PDF...
+2026-02-04 13:03:07 - src.autotramite - INFO - PDF guardado: C:\Users\denny\OneDrive\Documentos\PRACTICAS\PYTHON\Streamlit\BOTH\n8n\projects\gestordocs\autotramite_py_mvp\screenshots\preview_DRLZ16_20260204_130149.pdf
+2026-02-04 13:03:07 - src.autotramite - INFO - Modo dry-run: NO se registrara el contrato
+2026-02-04 13:03:07 - src.autotramite - INFO - Operación completada exitosamente | {'duracion_segundos': 78.34, 'operacion_id': None}
+2026-02-04 13:06:17 - src.autotramite - INFO - Iniciando creación de contrato | {'patente': 'DRLZ16', 'dry_run': True}
+2026-02-04 13:06:18 - src.autotramite - INFO - Iniciando login en AutoTramite
+2026-02-04 13:06:22 - src.autotramite - INFO - Login exitoso | {'url_destino': 'https://autotramite.cl/secciones/index.php'}
+2026-02-04 13:06:22 - src.autotramite - INFO - Llenando formulario de contrato | {'patente': 'DRLZ16', 'vendedor_rut': '26.0****', 'comprador_rut': '26.0****'}
+2026-02-04 13:06:50 - src.autotramite - INFO - Formulario llenado completamente
+2026-02-04 13:06:50 - src.autotramite - INFO - Previsualizando contrato (dry_run=True)
+2026-02-04 13:06:51 - src.autotramite - INFO - Esperando generacion del PDF...
+2026-02-04 13:06:56 - src.autotramite - INFO - PDF guardado: C:\Users\denny\OneDrive\Documentos\PRACTICAS\PYTHON\Streamlit\BOTH\n8n\projects\gestordocs\autotramite_py_mvp\screenshots\preview_DRLZ16_20260204_130617.pdf
+2026-02-04 13:06:56 - src.autotramite - INFO - Modo dry-run: NO se registrara el contrato
+2026-02-04 13:06:56 - src.autotramite - INFO - Operación completada exitosamente | {'duracion_segundos': 38.6, 'operacion_id': None}
+2026-02-04 13:15:49 - src.autotramite - INFO - Iniciando creación de contrato | {'patente': 'DRLZ16', 'dry_run': True}
+2026-02-04 13:15:50 - src.autotramite - INFO - Iniciando login en AutoTramite
+2026-02-04 13:15:57 - src.autotramite - INFO - Login exitoso | {'url_destino': 'https://autotramite.cl/secciones/index.php'}
+2026-02-04 13:15:57 - src.autotramite - INFO - Llenando formulario de contrato | {'patente': 'DRLZ16', 'vendedor_rut': '26.0****', 'comprador_rut': '26.0****'}
+2026-02-04 13:16:26 - src.autotramite - INFO - Formulario llenado completamente
+2026-02-04 13:16:26 - src.autotramite - INFO - Previsualizando contrato (dry_run=True)
+2026-02-04 13:16:56 - src.autotramite - WARNING - No se detecto respuesta PDF en la previsualizacion
+2026-02-04 13:16:56 - src.autotramite - INFO - Esperando generacion del PDF...
+2026-02-04 13:17:01 - src.autotramite - WARNING - Respuesta no es PDF (content-type=text/html; charset=utf-8)
+2026-02-04 13:17:01 - src.autotramite - INFO - Modo dry-run: NO se registrara el contrato
+2026-02-04 13:17:01 - src.autotramite - INFO - Operación completada exitosamente | {'duracion_segundos': 71.77, 'operacion_id': None}
+2026-02-04 13:35:13 - src.autotramite - INFO - Iniciando creación de contrato | {'patente': 'DRLZ16', 'dry_run': True}
+2026-02-04 13:35:14 - src.autotramite - INFO - Iniciando login en AutoTramite
+2026-02-04 13:35:21 - src.autotramite - INFO - Login exitoso | {'url_destino': 'https://autotramite.cl/secciones/index.php'}
+2026-02-04 13:35:21 - src.autotramite - INFO - Llenando formulario de contrato | {'patente': 'DRLZ16', 'vendedor_rut': '26.0****', 'comprador_rut': '26.0****'}
+2026-02-04 13:35:50 - src.autotramite - INFO - Formulario llenado completamente
+2026-02-04 13:35:50 - src.autotramite - INFO - Previsualizando contrato (dry_run=True)
+2026-02-04 13:36:20 - src.autotramite - WARNING - No se detecto respuesta PDF en la previsualizacion
+2026-02-04 13:36:20 - src.autotramite - INFO - Esperando generacion del PDF...
+2026-02-04 13:36:26 - src.autotramite - WARNING - Respuesta no es PDF (content-type=text/html; charset=utf-8)
+2026-02-04 13:36:26 - src.autotramite - INFO - Modo dry-run: NO se registrara el contrato
+2026-02-04 13:36:26 - src.autotramite - INFO - Operación completada exitosamente | {'duracion_segundos': 72.15, 'operacion_id': None}
+2026-02-04 13:38:59 - src.autotramite - INFO - Iniciando creación de contrato | {'patente': 'DRLZ16', 'dry_run': True}
+2026-02-04 13:39:00 - src.autotramite - INFO - Iniciando login en AutoTramite
+2026-02-04 13:39:04 - src.autotramite - INFO - Login exitoso | {'url_destino': 'https://autotramite.cl/secciones/index.php'}
+2026-02-04 13:39:04 - src.autotramite - INFO - Llenando formulario de contrato | {'patente': 'DRLZ16', 'vendedor_rut': '26.0****', 'comprador_rut': '26.0****'}
+2026-02-04 13:39:33 - src.autotramite - INFO - Formulario llenado completamente
+2026-02-04 13:39:33 - src.autotramite - INFO - Previsualizando contrato (dry_run=True)
+2026-02-04 13:40:03 - src.autotramite - WARNING - No se detecto respuesta PDF en la previsualizacion
+2026-02-04 13:40:03 - src.autotramite - INFO - Esperando generacion del PDF...
+2026-02-04 13:40:09 - src.autotramite - WARNING - Respuesta no es PDF (content-type=text/html; charset=utf-8)
+2026-02-04 13:40:09 - src.autotramite - INFO - Modo dry-run: NO se registrara el contrato
+2026-02-04 13:40:09 - src.autotramite - INFO - Operación completada exitosamente | {'duracion_segundos': 69.32, 'operacion_id': None}
+2026-02-04 13:46:35 - src.autotramite - INFO - Iniciando creación de contrato | {'patente': 'DRLZ16', 'dry_run': True}
+2026-02-04 13:46:36 - src.autotramite - INFO - Iniciando login en AutoTramite
+2026-02-04 13:46:40 - src.autotramite - INFO - Login exitoso | {'url_destino': 'https://autotramite.cl/secciones/index.php'}
+2026-02-04 13:46:40 - src.autotramite - INFO - Llenando formulario de contrato | {'patente': 'DRLZ16', 'vendedor_rut': '26.0****', 'comprador_rut': '26.0****'}
+2026-02-04 13:47:09 - src.autotramite - INFO - Formulario llenado completamente
+2026-02-04 13:47:09 - src.autotramite - INFO - Previsualizando contrato (dry_run=True)
+2026-02-04 13:47:14 - src.autotramite - INFO - Esperando generacion del PDF...
+2026-02-04 13:47:19 - src.autotramite - INFO - PDF guardado: C:\Users\denny\OneDrive\Documentos\PRACTICAS\PYTHON\Streamlit\BOTH\n8n\projects\gestordocs\autotramite_py_mvp\screenshots\preview_DRLZ16_20260204_134635.pdf
+2026-02-04 13:47:19 - src.autotramite - INFO - Modo dry-run: NO se registrara el contrato
+2026-02-04 13:47:19 - src.autotramite - INFO - Operación completada exitosamente | {'duracion_segundos': 44.11, 'operacion_id': None}
+2026-02-04 13:49:27 - src.autotramite - INFO - Iniciando creación de contrato | {'patente': 'DRLZ16', 'dry_run': True}
+2026-02-04 13:49:28 - src.autotramite - INFO - Iniciando login en AutoTramite
+2026-02-04 13:49:32 - src.autotramite - INFO - Login exitoso | {'url_destino': 'https://autotramite.cl/secciones/index.php'}
+2026-02-04 13:49:32 - src.autotramite - INFO - Llenando formulario de contrato | {'patente': 'DRLZ16', 'vendedor_rut': '26.0****', 'comprador_rut': '26.0****'}
+2026-02-04 13:50:01 - src.autotramite - INFO - Formulario llenado completamente
+2026-02-04 13:50:01 - src.autotramite - INFO - Previsualizando contrato (dry_run=True)
+2026-02-04 13:50:32 - src.autotramite - WARNING - No se detecto respuesta PDF en la previsualizacion
+2026-02-04 13:50:32 - src.autotramite - INFO - Esperando generacion del PDF...
+2026-02-04 13:50:37 - src.autotramite - INFO - PDF guardado: C:\Users\denny\OneDrive\Documentos\PRACTICAS\PYTHON\Streamlit\BOTH\n8n\projects\gestordocs\autotramite_py_mvp\screenshots\preview_DRLZ16_20260204_134927.pdf
+2026-02-04 13:50:37 - src.autotramite - INFO - Modo dry-run: NO se registrara el contrato
+2026-02-04 13:50:37 - src.autotramite - INFO - Operación completada exitosamente | {'duracion_segundos': 69.16, 'operacion_id': None}
+2026-02-04 13:53:14 - src.autotramite - INFO - Iniciando creación de contrato | {'patente': 'DRLZ16', 'dry_run': True}
+2026-02-04 13:53:15 - src.autotramite - INFO - Iniciando login en AutoTramite
+2026-02-04 13:53:20 - src.autotramite - INFO - Login exitoso | {'url_destino': 'https://autotramite.cl/secciones/index.php'}
+2026-02-04 13:53:20 - src.autotramite - INFO - Llenando formulario de contrato | {'patente': 'DRLZ16', 'vendedor_rut': '26.0****', 'comprador_rut': '26.0****'}
+2026-02-04 13:53:48 - src.autotramite - INFO - Formulario llenado completamente
+2026-02-04 13:53:48 - src.autotramite - INFO - Previsualizando contrato (dry_run=True)
+2026-02-04 13:53:53 - src.autotramite - INFO - Esperando generacion del PDF...
+2026-02-04 13:53:58 - src.autotramite - INFO - PDF guardado: C:\Users\denny\OneDrive\Documentos\PRACTICAS\PYTHON\Streamlit\BOTH\n8n\projects\gestordocs\autotramite_py_mvp\screenshots\preview_DRLZ16_20260204_135314.pdf
+2026-02-04 13:53:58 - src.autotramite - INFO - Modo dry-run: NO se registrara el contrato
+2026-02-04 13:53:58 - src.autotramite - INFO - Operación completada exitosamente | {'duracion_segundos': 43.49, 'operacion_id': None}
+2026-02-04 13:56:38 - src.autotramite - INFO - Iniciando creación de contrato | {'patente': 'DRLZ16', 'dry_run': True}
+2026-02-04 13:56:39 - src.autotramite - INFO - Iniciando login en AutoTramite
+2026-02-04 13:56:46 - src.autotramite - INFO - Login exitoso | {'url_destino': 'https://autotramite.cl/secciones/index.php'}
+2026-02-04 13:56:46 - src.autotramite - INFO - Llenando formulario de contrato | {'patente': 'DRLZ16', 'vendedor_rut': '26.0****', 'comprador_rut': '26.0****'}
+2026-02-04 13:57:15 - src.autotramite - INFO - Formulario llenado completamente
+2026-02-04 13:57:15 - src.autotramite - INFO - Previsualizando contrato (dry_run=True)
+2026-02-04 13:57:45 - src.autotramite - WARNING - No se detecto respuesta PDF en la previsualizacion
+2026-02-04 13:57:45 - src.autotramite - INFO - Esperando generacion del PDF...
+2026-02-04 13:57:50 - src.autotramite - INFO - PDF guardado: C:\Users\denny\OneDrive\Documentos\PRACTICAS\PYTHON\Streamlit\BOTH\n8n\projects\gestordocs\autotramite_py_mvp\screenshots\preview_DRLZ16_20260204_135638.pdf
+2026-02-04 13:57:50 - src.autotramite - INFO - Modo dry-run: NO se registrara el contrato
+2026-02-04 13:57:50 - src.autotramite - INFO - Operación completada exitosamente | {'duracion_segundos': 71.38, 'operacion_id': None}
+2026-02-04 14:06:42 - src.autotramite - INFO - Iniciando creación de contrato | {'patente': 'DRLZ16', 'dry_run': True}
+2026-02-04 14:06:43 - src.autotramite - INFO - Iniciando login en AutoTramite
+2026-02-04 14:06:50 - src.autotramite - INFO - Login exitoso | {'url_destino': 'https://autotramite.cl/secciones/index.php'}
+2026-02-04 14:06:50 - src.autotramite - INFO - Llenando formulario de contrato | {'patente': 'DRLZ16', 'vendedor_rut': '26.0****', 'comprador_rut': '26.0****'}
+2026-02-04 14:07:19 - src.autotramite - INFO - Formulario llenado completamente
+2026-02-04 14:07:19 - src.autotramite - INFO - Previsualizando contrato (dry_run=True)
+2026-02-04 14:07:49 - src.autotramite - WARNING - No se detecto respuesta PDF en la previsualizacion
+2026-02-04 14:07:49 - src.autotramite - INFO - Esperando generacion del PDF...
+2026-02-04 14:07:54 - src.autotramite - INFO - PDF guardado: C:\Users\denny\OneDrive\Documentos\PRACTICAS\PYTHON\Streamlit\BOTH\n8n\projects\gestordocs\autotramite_py_mvp\screenshots\preview_DRLZ16_20260204_140642.pdf
+2026-02-04 14:07:54 - src.autotramite - INFO - Modo dry-run: NO se registrara el contrato
+2026-02-04 14:07:54 - src.autotramite - INFO - Operación completada exitosamente | {'duracion_segundos': 71.35, 'operacion_id': None}
+2026-02-04 14:13:18 - src.autotramite - INFO - Iniciando creación de contrato | {'patente': 'DRLZ16', 'dry_run': True}
+2026-02-04 14:13:18 - src.autotramite - INFO - Iniciando login en AutoTramite
+2026-02-04 14:13:23 - src.autotramite - INFO - Login exitoso | {'url_destino': 'https://autotramite.cl/secciones/index.php'}
+2026-02-04 14:13:23 - src.autotramite - INFO - Llenando formulario de contrato | {'patente': 'DRLZ16', 'vendedor_rut': '26.0****', 'comprador_rut': '26.0****'}
+2026-02-04 14:13:51 - src.autotramite - INFO - Formulario llenado completamente
+2026-02-04 14:13:51 - src.autotramite - INFO - Previsualizando contrato (dry_run=True)
+2026-02-04 14:14:21 - src.autotramite - WARNING - No se detecto respuesta PDF en la previsualizacion
+2026-02-04 14:14:21 - src.autotramite - INFO - Esperando generacion del PDF...
+2026-02-04 14:14:26 - src.autotramite - WARNING - Respuesta PDF no valida (no inicia con %PDF)
+2026-02-04 14:14:27 - src.autotramite - WARNING - Respuesta no es PDF (content-type=text/html; charset=utf-8)
+2026-02-04 14:14:27 - src.autotramite - WARNING - Debug preview guardado: C:\Users\denny\OneDrive\Documentos\PRACTICAS\PYTHON\Streamlit\BOTH\n8n\projects\gestordocs\autotramite_py_mvp\screenshots\preview_DRLZ16_20260204_141318.html / C:\Users\denny\OneDrive\Documentos\PRACTICAS\PYTHON\Streamlit\BOTH\n8n\projects\gestordocs\autotramite_py_mvp\screenshots\preview_DRLZ16_20260204_141318.urls.txt
+2026-02-04 14:14:27 - src.autotramite - INFO - Modo dry-run: NO se registrara el contrato
+2026-02-04 14:14:27 - src.autotramite - INFO - Operación completada exitosamente | {'duracion_segundos': 69.08, 'operacion_id': None}
+2026-02-04 14:21:54 - src.autotramite - INFO - Iniciando creación de contrato | {'patente': 'DRLZ16', 'dry_run': True}
+2026-02-04 14:21:54 - src.autotramite - INFO - Iniciando login en AutoTramite
+2026-02-04 14:22:02 - src.autotramite - INFO - Login exitoso | {'url_destino': 'https://autotramite.cl/secciones/index.php'}
+2026-02-04 14:22:02 - src.autotramite - INFO - Llenando formulario de contrato | {'patente': 'DRLZ16', 'vendedor_rut': '26.0****', 'comprador_rut': '26.0****'}
+2026-02-04 14:22:31 - src.autotramite - INFO - Formulario llenado completamente
+2026-02-04 14:22:31 - src.autotramite - INFO - Previsualizando contrato (dry_run=True)
+2026-02-04 14:23:01 - src.autotramite - WARNING - No se detecto respuesta PDF en la previsualizacion
+2026-02-04 14:23:01 - src.autotramite - INFO - Esperando generacion del PDF...
+2026-02-04 14:23:06 - src.autotramite - WARNING - Respuesta PDF no valida (no inicia con %PDF)
+2026-02-04 14:23:06 - src.autotramite - WARNING - Respuesta no es PDF (content-type=text/html; charset=utf-8)
+2026-02-04 14:23:06 - src.autotramite - INFO - PDF guardado desde base64: C:\Users\denny\OneDrive\Documentos\PRACTICAS\PYTHON\Streamlit\BOTH\n8n\projects\gestordocs\autotramite_py_mvp\screenshots\preview_DRLZ16_20260204_142154.pdf
+2026-02-04 14:23:06 - src.autotramite - WARNING - PDF muy pequeno (3650 bytes). Revisa el contenido.
+2026-02-04 14:23:06 - src.autotramite - INFO - Modo dry-run: NO se registrara el contrato
+2026-02-04 14:23:06 - src.autotramite - INFO - Operación completada exitosamente | {'duracion_segundos': 72.28, 'operacion_id': None}
+2026-02-04 14:24:45 - src.autotramite - INFO - Iniciando creación de contrato | {'patente': 'HHTF16', 'dry_run': True}
+2026-02-04 14:24:46 - src.autotramite - INFO - Iniciando login en AutoTramite
+2026-02-04 14:24:50 - src.autotramite - INFO - Login exitoso | {'url_destino': 'https://autotramite.cl/secciones/index.php'}
+2026-02-04 14:24:50 - src.autotramite - INFO - Llenando formulario de contrato | {'patente': 'HHTF16', 'vendedor_rut': '26.0****', 'comprador_rut': '26.0****'}
+2026-02-04 14:25:19 - src.autotramite - INFO - Formulario llenado completamente
+2026-02-04 14:25:19 - src.autotramite - INFO - Previsualizando contrato (dry_run=True)
+2026-02-04 14:25:49 - src.autotramite - WARNING - No se detecto respuesta PDF en la previsualizacion
+2026-02-04 14:25:49 - src.autotramite - INFO - Esperando generacion del PDF...
+2026-02-04 14:25:54 - src.autotramite - WARNING - Respuesta PDF no valida (no inicia con %PDF)
+2026-02-04 14:25:54 - src.autotramite - WARNING - Respuesta no es PDF (content-type=text/html; charset=utf-8)
+2026-02-04 14:25:54 - src.autotramite - INFO - PDF guardado desde base64: C:\Users\denny\OneDrive\Documentos\PRACTICAS\PYTHON\Streamlit\BOTH\n8n\projects\gestordocs\autotramite_py_mvp\screenshots\preview_HHTF16_20260204_142445.pdf
+2026-02-04 14:25:54 - src.autotramite - WARNING - PDF muy pequeno (3651 bytes). Revisa el contenido.
+2026-02-04 14:25:54 - src.autotramite - INFO - Modo dry-run: NO se registrara el contrato
+2026-02-04 14:25:54 - src.autotramite - INFO - Operación completada exitosamente | {'duracion_segundos': 68.92, 'operacion_id': None}
+2026-02-04 14:32:12 - src.autotramite - INFO - Iniciando creación de contrato | {'patente': 'HHRP11', 'dry_run': True}
+2026-02-04 14:40:01 - src.autotramite - INFO - Iniciando creación de contrato | {'patente': 'HHRP11', 'dry_run': True}
+2026-02-04 14:40:02 - src.autotramite - INFO - Iniciando login en AutoTramite
+2026-02-04 14:40:12 - src.autotramite - INFO - Login exitoso | {'url_destino': 'https://autotramite.cl/secciones/index.php'}
+2026-02-04 14:40:12 - src.autotramite - INFO - Llenando formulario de contrato | {'patente': 'HHRP11', 'vendedor_rut': '26.0****', 'comprador_rut': '26.0****'}
+2026-02-04 14:40:40 - src.autotramite - INFO - Formulario llenado completamente
+2026-02-04 14:40:40 - src.autotramite - INFO - Previsualizando contrato (dry_run=True)
+2026-02-04 14:41:10 - src.autotramite - WARNING - No se detecto respuesta PDF en la previsualizacion
+2026-02-04 14:41:10 - src.autotramite - INFO - Esperando generacion del PDF...
+2026-02-04 14:41:16 - src.autotramite - WARNING - Respuesta PDF no valida (no inicia con %PDF)
+2026-02-04 14:41:16 - src.autotramite - WARNING - Respuesta no es PDF (content-type=text/html; charset=utf-8)
+2026-02-04 14:41:16 - src.autotramite - INFO - PDF guardado desde base64: C:\Users\denny\OneDrive\Documentos\PRACTICAS\PYTHON\Streamlit\BOTH\n8n\projects\gestordocs\autotramite_py_mvp\screenshots\preview_HHRP11_20260204_144001.pdf
+2026-02-04 14:41:16 - src.autotramite - WARNING - PDF muy pequeno (3649 bytes). Revisa el contenido.
+2026-02-04 14:41:16 - src.autotramite - INFO - Modo dry-run: NO se registrara el contrato
+2026-02-04 14:41:16 - src.autotramite - INFO - Operación completada exitosamente | {'duracion_segundos': 74.71, 'operacion_id': None}
+2026-02-04 14:46:09 - src.autotramite - INFO - Iniciando creación de contrato | {'patente': 'HHRP11', 'dry_run': True}
+2026-02-04 14:46:09 - src.autotramite - INFO - Iniciando login en AutoTramite
+2026-02-04 14:46:14 - src.autotramite - INFO - Login exitoso | {'url_destino': 'https://autotramite.cl/secciones/index.php'}
+2026-02-04 14:46:14 - src.autotramite - INFO - Llenando formulario de contrato | {'patente': 'HHRP11', 'vendedor_rut': '26.0****', 'comprador_rut': '26.0****'}
+2026-02-04 14:46:42 - src.autotramite - INFO - Formulario llenado completamente
+2026-02-04 14:46:42 - src.autotramite - INFO - Previsualizando contrato (dry_run=True)
+2026-02-04 14:47:12 - src.autotramite - WARNING - No se detecto respuesta PDF en la previsualizacion
+2026-02-04 14:47:12 - src.autotramite - INFO - Esperando generacion del PDF...
+2026-02-04 14:47:17 - src.autotramite - WARNING - Respuesta PDF no valida (no inicia con %PDF)
+2026-02-04 14:47:18 - src.autotramite - WARNING - Respuesta no es PDF (content-type=text/html; charset=utf-8)
+2026-02-04 14:47:18 - src.autotramite - INFO - PDF guardado desde base64: C:\Users\denny\OneDrive\Documentos\PRACTICAS\PYTHON\Streamlit\BOTH\n8n\projects\gestordocs\autotramite_py_mvp\screenshots\preview_HHRP11_20260204_144609.pdf
+2026-02-04 14:47:18 - src.autotramite - WARNING - PDF muy pequeno (3649 bytes). Revisa el contenido.
+2026-02-04 14:47:18 - src.autotramite - INFO - Modo dry-run: NO se registrara el contrato
+2026-02-04 14:47:18 - src.autotramite - INFO - Operación completada exitosamente | {'duracion_segundos': 68.78, 'operacion_id': None}
+2026-02-04 14:47:59 - src.autotramite - INFO - Iniciando creación de contrato | {'patente': 'HHRP11', 'dry_run': True}
+2026-02-04 14:48:00 - src.autotramite - INFO - Iniciando login en AutoTramite
+2026-02-04 14:48:04 - src.autotramite - INFO - Login exitoso | {'url_destino': 'https://autotramite.cl/secciones/index.php'}
+2026-02-04 14:48:04 - src.autotramite - INFO - Llenando formulario de contrato | {'patente': 'HHRP11', 'vendedor_rut': '26.0****', 'comprador_rut': '26.0****'}
+2026-02-04 14:48:33 - src.autotramite - INFO - Formulario llenado completamente
+2026-02-04 14:48:33 - src.autotramite - INFO - Previsualizando contrato (dry_run=True)
+2026-02-04 14:49:03 - src.autotramite - WARNING - No se detecto respuesta PDF en la previsualizacion
+2026-02-04 14:49:03 - src.autotramite - INFO - Esperando generacion del PDF...
+2026-02-04 14:49:08 - src.autotramite - WARNING - Respuesta PDF no valida (no inicia con %PDF)
+2026-02-04 14:49:08 - src.autotramite - WARNING - Respuesta no es PDF (content-type=text/html; charset=utf-8)
+2026-02-04 14:49:08 - src.autotramite - INFO - PDF guardado desde base64: C:\Users\denny\OneDrive\Documentos\PRACTICAS\PYTHON\Streamlit\BOTH\n8n\projects\gestordocs\autotramite_py_mvp\screenshots\preview_HHRP11_20260204_144759.pdf
+2026-02-04 14:49:08 - src.autotramite - WARNING - PDF muy pequeno (3649 bytes). Revisa el contenido.
+2026-02-04 14:49:08 - src.autotramite - INFO - Modo dry-run: NO se registrara el contrato
+2026-02-04 14:49:08 - src.autotramite - INFO - Operación completada exitosamente | {'duracion_segundos': 69.3, 'operacion_id': None}
+2026-02-04 14:50:41 - src.autotramite - INFO - Iniciando creación de contrato | {'patente': 'HHRP11', 'dry_run': False}
+2026-02-04 14:50:41 - src.autotramite - INFO - Iniciando login en AutoTramite
+2026-02-04 14:50:46 - src.autotramite - INFO - Login exitoso | {'url_destino': 'https://autotramite.cl/secciones/index.php'}
+2026-02-04 14:50:46 - src.autotramite - INFO - Llenando formulario de contrato | {'patente': 'HHRP11', 'vendedor_rut': '26.0****', 'comprador_rut': '26.0****'}
+2026-02-04 14:51:14 - src.autotramite - INFO - Formulario llenado completamente
+2026-02-04 14:51:14 - src.autotramite - INFO - Previsualizando contrato (dry_run=False)
+2026-02-04 14:51:44 - src.autotramite - WARNING - No se detecto respuesta PDF en la previsualizacion
+2026-02-04 14:51:44 - src.autotramite - INFO - Esperando generacion del PDF...
+2026-02-04 14:51:49 - src.autotramite - WARNING - Respuesta PDF no valida (no inicia con %PDF)
+2026-02-04 14:51:50 - src.autotramite - WARNING - Respuesta no es PDF (content-type=text/html; charset=utf-8)
+2026-02-04 14:51:50 - src.autotramite - INFO - PDF guardado desde base64: C:\Users\denny\OneDrive\Documentos\PRACTICAS\PYTHON\Streamlit\BOTH\n8n\projects\gestordocs\autotramite_py_mvp\screenshots\preview_HHRP11_20260204_145040.pdf
+2026-02-04 14:51:50 - src.autotramite - WARNING - PDF muy pequeno (3649 bytes). Revisa el contenido.
+2026-02-04 14:51:58 - src.autotramite - INFO - Contrato procesado exitosamente | {'operacion_id': None, 'pdf_url': 'https://autotramite.cl/pdf/pdf_AutoTramite/contrat'}
+2026-02-04 14:51:58 - src.autotramite - INFO - Operación completada exitosamente | {'duracion_segundos': 77.15, 'operacion_id': None}
+2026-02-04 15:01:21 - src.autotramite - INFO - Iniciando creación de contrato | {'patente': 'HHRP11', 'dry_run': False}
+2026-02-04 15:01:21 - src.autotramite - INFO - Iniciando login en AutoTramite
+2026-02-04 15:01:28 - src.autotramite - INFO - Login exitoso | {'url_destino': 'https://autotramite.cl/secciones/index.php'}
+2026-02-04 15:01:28 - src.autotramite - INFO - Llenando formulario de contrato | {'patente': 'HHRP11', 'vendedor_rut': '26.0****', 'comprador_rut': '26.0****'}
+2026-02-04 15:01:57 - src.autotramite - INFO - Formulario llenado completamente
+2026-02-04 15:01:57 - src.autotramite - INFO - Previsualizando contrato (dry_run=False)
+2026-02-04 15:02:27 - src.autotramite - WARNING - No se detecto respuesta PDF en la previsualizacion
+2026-02-04 15:02:27 - src.autotramite - INFO - Esperando generacion del PDF...
+2026-02-04 15:02:32 - src.autotramite - WARNING - Respuesta PDF no valida (no inicia con %PDF)
+2026-02-04 15:02:33 - src.autotramite - WARNING - Respuesta no es PDF (content-type=text/html; charset=utf-8)
+2026-02-04 15:02:33 - src.autotramite - INFO - PDF guardado desde base64: C:\Users\denny\OneDrive\Documentos\PRACTICAS\PYTHON\Streamlit\BOTH\n8n\projects\gestordocs\autotramite_py_mvp\screenshots\preview_HHRP11_20260204_150120.pdf
+2026-02-04 15:02:33 - src.autotramite - WARNING - PDF muy pequeno (3649 bytes). Revisa el contenido.
+2026-02-04 15:02:41 - src.autotramite - INFO - Contrato procesado exitosamente | {'operacion_id': None, 'pdf_url': 'https://autotramite.cl/pdf/pdf_AutoTramite/contrat'}
+2026-02-04 15:02:41 - src.autotramite - INFO - Operación completada exitosamente | {'duracion_segundos': 80.12, 'operacion_id': None}
+2026-02-04 15:06:54 - src.autotramite - INFO - Iniciando creación de contrato | {'patente': 'HHTF16', 'dry_run': True}
+2026-02-04 15:06:55 - src.autotramite - INFO - Iniciando login en AutoTramite
+2026-02-04 15:06:59 - src.autotramite - INFO - Login exitoso | {'url_destino': 'https://autotramite.cl/secciones/index.php'}
+2026-02-04 15:06:59 - src.autotramite - INFO - Llenando formulario de contrato | {'patente': 'HHTF16', 'vendedor_rut': '26.0****', 'comprador_rut': '26.0****'}
+2026-02-04 15:07:28 - src.autotramite - INFO - Formulario llenado completamente
+2026-02-04 15:07:28 - src.autotramite - INFO - Previsualizando contrato (dry_run=True)
+2026-02-04 15:07:58 - src.autotramite - WARNING - No se detecto respuesta PDF en la previsualizacion
+2026-02-04 15:07:58 - src.autotramite - INFO - Esperando generacion del PDF...
+2026-02-04 15:08:03 - src.autotramite - WARNING - Respuesta PDF no valida (no inicia con %PDF)
+2026-02-04 15:08:04 - src.autotramite - WARNING - Respuesta no es PDF (content-type=text/html; charset=utf-8)
+2026-02-04 15:08:04 - src.autotramite - INFO - PDF guardado desde base64: C:\Users\denny\OneDrive\Documentos\PRACTICAS\PYTHON\Streamlit\BOTH\n8n\projects\gestordocs\autotramite_py_mvp\screenshots\preview_HHTF16_20260204_150654.pdf
+2026-02-04 15:08:04 - src.autotramite - WARNING - PDF muy pequeno (3651 bytes). Revisa el contenido.
+2026-02-04 15:08:04 - src.autotramite - INFO - Modo dry-run: NO se registrara el contrato
+2026-02-04 15:08:04 - src.autotramite - INFO - Operación completada exitosamente | {'duracion_segundos': 69.77, 'operacion_id': None}
+2026-02-04 15:13:18 - src.autotramite - INFO - Iniciando creación de contrato | {'patente': 'HHRP11', 'dry_run': False}
+2026-02-04 15:13:19 - src.autotramite - INFO - Iniciando login en AutoTramite
+2026-02-04 15:13:23 - src.autotramite - INFO - Login exitoso | {'url_destino': 'https://autotramite.cl/secciones/index.php'}
+2026-02-04 15:13:23 - src.autotramite - INFO - Llenando formulario de contrato | {'patente': 'HHRP11', 'vendedor_rut': '26.0****', 'comprador_rut': '26.0****'}
+2026-02-04 15:13:52 - src.autotramite - INFO - Formulario llenado completamente
+2026-02-04 15:13:52 - src.autotramite - INFO - Previsualizando contrato (dry_run=False)
+2026-02-04 15:14:22 - src.autotramite - WARNING - No se detecto respuesta PDF en la previsualizacion
+2026-02-04 15:14:22 - src.autotramite - INFO - Esperando generacion del PDF...
+2026-02-04 15:14:27 - src.autotramite - WARNING - Respuesta PDF no valida (no inicia con %PDF)
+2026-02-04 15:14:27 - src.autotramite - WARNING - Respuesta no es PDF (content-type=text/html; charset=utf-8)
+2026-02-04 15:14:27 - src.autotramite - INFO - PDF guardado desde base64: C:\Users\denny\OneDrive\Documentos\PRACTICAS\PYTHON\Streamlit\BOTH\n8n\projects\gestordocs\autotramite_py_mvp\screenshots\preview_HHRP11_20260204_151318.pdf
+2026-02-04 15:14:27 - src.autotramite - WARNING - PDF muy pequeno (3649 bytes). Revisa el contenido.
+2026-02-04 15:14:27 - src.autotramite - INFO - Registrando operacion...
+2026-02-04 15:14:56 - src.autotramite - INFO - Contrato procesado exitosamente | {'operacion_id': None, 'pdf_url': 'https://autotramite.cl/pdf/pdf_AutoTramite/contrat'}
+2026-02-04 15:14:56 - src.autotramite - INFO - Operación completada exitosamente | {'duracion_segundos': 97.35, 'operacion_id': None}
+2026-02-04 15:17:20 - src.autotramite - INFO - Iniciando creación de contrato | {'patente': 'KRTY11', 'dry_run': False}
+2026-02-04 15:17:20 - src.autotramite - INFO - Iniciando login en AutoTramite
+2026-02-04 15:17:28 - src.autotramite - INFO - Login exitoso | {'url_destino': 'https://autotramite.cl/secciones/index.php'}
+2026-02-04 15:17:28 - src.autotramite - INFO - Llenando formulario de contrato | {'patente': 'KRTY11', 'vendedor_rut': '26.0****', 'comprador_rut': '26.0****'}
+2026-02-04 15:18:06 - src.autotramite - INFO - Formulario llenado completamente
+2026-02-04 15:18:06 - src.autotramite - INFO - Previsualizando contrato (dry_run=False)
+2026-02-04 15:18:36 - src.autotramite - WARNING - No se detecto respuesta PDF en la previsualizacion
+2026-02-04 15:18:36 - src.autotramite - INFO - Esperando generacion del PDF...
+2026-02-04 15:18:41 - src.autotramite - WARNING - Respuesta PDF no valida (no inicia con %PDF)
+2026-02-04 15:18:41 - src.autotramite - WARNING - Respuesta no es PDF (content-type=text/html; charset=utf-8)
+2026-02-04 15:18:42 - src.autotramite - INFO - PDF guardado desde base64: C:\Users\denny\OneDrive\Documentos\PRACTICAS\PYTHON\Streamlit\BOTH\n8n\projects\gestordocs\autotramite_py_mvp\screenshots\preview_KRTY11_20260204_151720.pdf
+2026-02-04 15:18:42 - src.autotramite - WARNING - PDF muy pequeno (3652 bytes). Revisa el contenido.
+2026-02-04 15:18:42 - src.autotramite - INFO - Registrando operacion...
+2026-02-04 15:19:08 - src.autotramite - INFO - Contrato procesado exitosamente | {'operacion_id': None, 'pdf_url': 'https://autotramite.cl/pdf/pdf_AutoTramite/contrat'}
+2026-02-04 15:19:08 - src.autotramite - INFO - Operación completada exitosamente | {'duracion_segundos': 108.4, 'operacion_id': None}
