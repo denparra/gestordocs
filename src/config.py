@@ -36,6 +36,13 @@ class Settings(BaseSettings):
     playwright_headless: bool = True
     playwright_slow_mo: int = 0  # ms de delay entre acciones (útil para debugging)
     
+    # SMTP Configuration (para envío de emails)
+    smtp_host: Optional[str] = None
+    smtp_port: Optional[int] = None
+    smtp_user: Optional[str] = None
+    smtp_pass: Optional[str] = None
+    smtp_secure: Optional[str] = 'none'  # 'tls', 'ssl', 'none', 'false'
+    
     # Valores por defecto del contrato
     generado_por_default: str = 'AUTORECENTE SPA (QUEIROLO)'
     tipo_firma_default: str = 'fea'  # Firma Electrónica Avanzada

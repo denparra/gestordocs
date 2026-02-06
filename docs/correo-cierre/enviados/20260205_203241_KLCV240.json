@@ -1,0 +1,32 @@
+{
+  "metadata": {
+    "timestamp": "2026-02-05T20:32:41.124711",
+    "usuario": "dparra@queirolo.cl",
+    "version_app": "1.0.0"
+  },
+  "destinatario": {
+    "email": "IN***@****.COM",
+    "nombre_cliente": "CLAUDIA MARCELA GARCÍA GÓMEZ"
+  },
+  "cc": {
+    "count": 2,
+    "addresses": [
+      "dp***@****.cl",
+      "de***@****.com"
+    ]
+  },
+  "vehiculo": {
+    "descripcion": "HYUNDAI GRAND I10 BA PE HB 1.2 2018 KLCV.24-0",
+    "patente": "KLCV.24-0"
+  },
+  "email": {
+    "asunto": "Cierre de negocio - HYUNDAI GRAND I10 BA",
+    "cuerpo_preview": "Buenas tardes estimado/a CLAUDIA MARCELA GARCÍA GÓMEZ:\n\nJunto con saludar, le informamos con mucha a...",
+    "cuerpo_completo": "Buenas tardes estimado/a CLAUDIA MARCELA GARCÍA GÓMEZ:\n\nJunto con saludar, le informamos con mucha alegría que ya contamos con el cierre de su vehículo HYUNDAI GRAND I10 BA PE HB 1.2 2018 KLCV.24-0, tal como fue conversado previamente con don Mario Queirolo.\nAgradecemos sinceramente la confianza depositada en nosotros. Ante cualquier duda o información adicional que requiera, estamos totalmente disponibles para asistirle.\n\nMONTO LIQUIDO A RECIBIR $8.880.000\n\nDATOS DEL PROPIETARIO\nNombre : CLAUDIA MARCELA GARCÍA GÓMEZ\nR.U.N. : 13.904.174-7\nFec. adquisición: 05-01-2022\nRepertorio : ALAMEDA\n\nDurante los próximos días estaremos finalizando el proceso. La fecha estimada de pago es entre 15-02-26 Y 18-02-26.\n\nIMPORTANTE\n\nUna vez confirmados los fondos en cuenta, procederemos a la firma de contratos el día hábil siguiente, entre 13:30 y 17:00 hrs.\n\nEnvíe por esta vía los datos bancarios del propietario según Registro Civil para efectuar el pago en la fecha correspondiente.\n\nEnviar los datos solicitados para procesar la transferencia previa a la recepción del pago.\n\nEnviar cédula de identidad por ambas caras.\n\nAgradecemos nuevamente la confianza al consignar su vehículo con nosotros. Estamos para acompañarle en todo el proceso.\n\nDennys Parra\nEjecutivo de Ventas\n+56 9 7540 0946\nAv. Las Condes 12461, Local 4A – Las Condes\nwww.queirolo.cl\n\nMás de 60 años en tu camino"
+  },
+  "resultado": {
+    "exito": true,
+    "mensaje": "Email enviado exitosamente a INFOAUTORECENTE@GMAIL.COM (+2 CC)",
+    "duracion_ms": 6443
+  }
+}

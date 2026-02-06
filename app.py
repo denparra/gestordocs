@@ -449,7 +449,7 @@ if st.session_state.view == 'menu':
             unsafe_allow_html=True,
         )
 
-    col1, col2 = st.columns(2, gap='large')
+    col1, col2, col3 = st.columns(3, gap='large')
     with col1:
         st.markdown(
             """
@@ -478,6 +478,21 @@ if st.session_state.view == 'menu':
         )
         if st.button('Abrir Habilitación Tag', use_container_width=True, key='open_tag'):
             st.session_state.view = 'tag'
+            st.rerun()
+
+    with col3:
+        st.markdown(
+            """
+            <div class="menu-card">
+                <h3>Mail de Cierre</h3>
+                <p>Envío automatizado de correos de cierre de negocio.</p>
+                <span class="menu-tag">Activo</span>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+        if st.button('Abrir Mail de Cierre', use_container_width=True, key='open_mail'):
+            st.session_state.view = 'mail'
             st.rerun()
 
     st.stop()
@@ -581,6 +596,351 @@ if st.session_state.view == 'tag':
                 )
         except Exception as e:
             st.warning(f'No se pudo preparar descarga: {e}')
+
+    st.stop()
+
+# Vista Mail de Cierre
+if st.session_state.view == 'mail':
+    from src.mail_utils import (
+        extraer_nombre_cliente,
+        generar_email_desde_plantilla,
+        validar_datos_mail,
+        enviar_email_smtp,
+        validar_smtp_config,
+        validar_config,
+        guardar_historial_envio,
+        get_config,
+        cargar_cc_predeterminados,
+    )
+    from time import time as get_time
+
+    if st.button('← Volver al menú', use_container_width=True):
+        st.session_state.view = 'menu'
+        st.rerun()
+
+    st.title('📧 Mail de Cierre - Envío de Confirmación')
+    st.markdown('---')
+
+    # Inicializar session state
+    if 'mail_resultado' not in st.session_state:
+        st.session_state.mail_resultado = None
+    if 'mail_preview_data' not in st.session_state:
+        st.session_state.mail_preview_data = None
+    if 'ultimo_envio_mail' not in st.session_state:
+        st.session_state.ultimo_envio_mail = None
+
+    # Validar configuración
+    smtp_ok, smtp_error = validar_smtp_config()
+    if not smtp_ok:
+        st.error(f'❌ {smtp_error}')
+        st.info('Configura las variables SMTP_* en el archivo .env')
+        st.stop()
+
+    config_ok, config_errors = validar_config()
+    if not config_ok:
+        st.error('❌ Errores en mail_config.yaml:')
+        for error in config_errors:
+            st.markdown(f'- {error}')
+        st.info('Revisa el archivo docs/correo-cierre/mail_config.yaml')
+        st.stop()
+
+    # Cargar ejemplo
+    example_mail_text = ''
+    example_path = Path('docs/autotramite/test.md')
+    if example_path.exists():
+        example_mail_text = example_path.read_text(encoding='utf-8')
+
+    # Si no hay preview activo, mostrar formulario
+    if st.session_state.mail_preview_data is None:
+        st.subheader('1. Ingresar Datos del Cliente')
+
+        with st.form('mail_form'):
+            datos_propietario = st.text_area(
+                'DATOS DEL PROPIETARIO (debe contener "Nombre : ...")',
+                height=150,
+                placeholder=example_mail_text or 'Nombre : ORIANA ISOLINA ARAYA AVENDAÑO\nR.U.N. : 10.982.440-2\n...',
+                help='Bloque de texto que debe contener la línea "Nombre : NOMBRE_COMPLETO"'
+            )
+
+            vehiculo = st.text_input(
+                'Vehículo',
+                placeholder='JEEP GRAND CHEROKEE LTD 4X4 3.6 AUT 2019 KVSX.14-3',
+                help='Descripción completa del vehículo'
+            )
+
+            precio_acordado = st.text_input(
+                'Precio Acordado',
+                placeholder='LIQUIDO A RECIBIR $17.000.000',
+                help='Precio acordado con el cliente'
+            )
+
+            fecha_pago = st.text_input(
+                'Fecha de Pago',
+                placeholder='10-02-2026 AL 13-02-2026',
+                help='Rango de fechas de pago'
+            )
+
+            st.markdown('---')
+
+            email_destino = st.text_input(
+                'Email Destino (TO) *',
+                placeholder='cliente@ejemplo.cl',
+                help='Email del destinatario principal (requerido)'
+            )
+
+            # Cargar CC predeterminados desde config
+            cc_predeterminados = cargar_cc_predeterminados()
+            allow_additional_cc = get_config('cc.allow_additional', True)
+
+            if cc_predeterminados and not allow_additional_cc:
+                # Solo mostrar CC predeterminados (no editable)
+                st.info(f"📋 CC predeterminados (automáticos): {', '.join(cc_predeterminados)}")
+                cc_emails_input = ''
+            elif cc_predeterminados and allow_additional_cc:
+                # Mostrar CC predeterminados como valor por defecto, permitir agregar más
+                default_cc = ', '.join(cc_predeterminados)
+                cc_emails_input = st.text_input(
+                    'CC - Copias Visibles',
+                    value=default_cc,
+                    placeholder='Agrega más emails separados por coma',
+                    help=f'IMPORTANTE: Estas copias son VISIBLES. Predeterminados: {default_cc}'
+                )
+            else:
+                # No hay CC predeterminados, campo vacío
+                cc_emails_input = st.text_input(
+                    'CC - Copias Visibles (opcional)',
+                    placeholder='gerencia@queirolo.cl, admin@queirolo.cl',
+                    help='Emails separados por coma o espacio. IMPORTANTE: Estas copias son VISIBLES para todos los destinatarios.'
+                )
+
+            vista_previa = st.checkbox(
+                'Vista previa antes de enviar',
+                value=get_config('comportamiento.preview_default', False),
+                help='Muestra el email generado para edición antes de enviar'
+            )
+
+            submit_mail = st.form_submit_button('🚀 Generar Correo', use_container_width=True)
+
+        if submit_mail:
+            st.session_state.mail_resultado = None
+
+            # Parsear CC emails
+            cc_emails = []
+
+            # Si no se permite adicionales pero hay predeterminados, usar solo predeterminados
+            if cc_predeterminados and not allow_additional_cc:
+                cc_emails = cc_predeterminados
+            elif cc_emails_input.strip():
+                # Separar por coma o espacio
+                cc_raw = re.split(r'[,\s]+', cc_emails_input.strip())
+                cc_emails = [e.strip() for e in cc_raw if e.strip()]
+            elif cc_predeterminados:
+                # Si el campo está vacío pero hay predeterminados, usarlos
+                cc_emails = cc_predeterminados
+
+            # Validar datos
+            es_valido, errores = validar_datos_mail(
+                datos_propietario,
+                email_destino,
+                cc_emails,
+                vehiculo,
+                precio_acordado,
+                fecha_pago
+            )
+
+            if not es_valido:
+                st.error('❌ Errores de validación:')
+                for error in errores:
+                    st.markdown(f'- {error}')
+            else:
+                try:
+                    # Generar email desde plantilla
+                    asunto, email_body = generar_email_desde_plantilla(
+                        datos_propietario,
+                        vehiculo,
+                        precio_acordado,
+                        fecha_pago
+                    )
+
+                    if vista_previa:
+                        # Guardar datos para preview
+                        st.session_state.mail_preview_data = {
+                            'asunto': asunto,
+                            'cuerpo': email_body,
+                            'email_destino': email_destino,
+                            'cc_emails': cc_emails,
+                            'datos_propietario': datos_propietario,
+                            'vehiculo': vehiculo,
+                            'precio_acordado': precio_acordado,
+                            'fecha_pago': fecha_pago,
+                        }
+                        st.rerun()
+                    else:
+                        # Enviar directamente
+                        # Verificar cooldown
+                        cooldown = get_config('comportamiento.cooldown_segundos', 30)
+                        if st.session_state.ultimo_envio_mail:
+                            delta = (datetime.now() - st.session_state.ultimo_envio_mail).total_seconds()
+                            if delta < cooldown:
+                                st.warning(f'⏳ Espera {int(cooldown - delta)}s antes de enviar otro correo')
+                                st.stop()
+
+                        with st.spinner('Enviando correo...'):
+                            inicio = get_time()
+                            success, mensaje = enviar_email_smtp(
+                                email_destino,
+                                asunto,
+                                email_body,
+                                cc=cc_emails
+                            )
+                            duracion_ms = int((get_time() - inicio) * 1000)
+
+                            if success:
+                                st.session_state.ultimo_envio_mail = datetime.now()
+                                st.session_state.mail_resultado = {
+                                    'exito': True,
+                                    'email': email_destino,
+                                    'cc_emails': cc_emails,
+                                    'fecha': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                                    'mensaje': mensaje
+                                }
+
+                                # Guardar historial
+                                nombre_cliente = extraer_nombre_cliente(datos_propietario) or 'DESCONOCIDO'
+                                # Extraer patente del vehículo (última parte)
+                                patente = vehiculo.split()[-1] if vehiculo else 'SIN-PATENTE'
+
+                                guardar_historial_envio(
+                                    email_destino=email_destino,
+                                    cc_emails=cc_emails,
+                                    nombre_cliente=nombre_cliente,
+                                    vehiculo=vehiculo,
+                                    patente=patente,
+                                    asunto=asunto,
+                                    cuerpo=email_body,
+                                    exito=True,
+                                    mensaje=mensaje,
+                                    duracion_ms=duracion_ms
+                                )
+                            else:
+                                st.session_state.mail_resultado = {
+                                    'exito': False,
+                                    'error': mensaje
+                                }
+
+                        st.rerun()
+
+                except Exception as e:
+                    st.error(f'❌ Error al generar email: {str(e)}')
+
+    # Vista previa y edición
+    elif st.session_state.mail_preview_data is not None:
+        st.subheader('2. Vista Previa y Edición')
+
+        preview_data = st.session_state.mail_preview_data
+
+        asunto_editado = st.text_input('Asunto', value=preview_data['asunto'])
+
+        email_editado = st.text_area(
+            'Cuerpo del correo (editable)',
+            value=preview_data['cuerpo'],
+            height=400,
+            help='Puedes modificar el texto antes de enviar'
+        )
+
+        st.caption(f"📧 Destinatario: {preview_data['email_destino']}")
+        if preview_data['cc_emails']:
+            st.caption(f"📋 CC (copias visibles): {', '.join(preview_data['cc_emails'])}")
+
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button('← Editar Datos', use_container_width=True):
+                st.session_state.mail_preview_data = None
+                st.rerun()
+
+        with col2:
+            if st.button('📤 Enviar Correo', use_container_width=True, type='primary'):
+                # Verificar cooldown
+                cooldown = get_config('comportamiento.cooldown_segundos', 30)
+                if st.session_state.ultimo_envio_mail:
+                    delta = (datetime.now() - st.session_state.ultimo_envio_mail).total_seconds()
+                    if delta < cooldown:
+                        st.warning(f'⏳ Espera {int(cooldown - delta)}s antes de enviar otro correo')
+                        st.stop()
+
+                with st.spinner('Enviando correo...'):
+                    inicio = get_time()
+                    success, mensaje = enviar_email_smtp(
+                        preview_data['email_destino'],
+                        asunto_editado,
+                        email_editado,
+                        cc=preview_data['cc_emails']
+                    )
+                    duracion_ms = int((get_time() - inicio) * 1000)
+
+                    if success:
+                        st.session_state.ultimo_envio_mail = datetime.now()
+                        st.session_state.mail_resultado = {
+                            'exito': True,
+                            'email': preview_data['email_destino'],
+                            'cc_emails': preview_data['cc_emails'],
+                            'fecha': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                            'mensaje': mensaje
+                        }
+
+                        # Guardar historial
+                        nombre_cliente = extraer_nombre_cliente(preview_data['datos_propietario']) or 'DESCONOCIDO'
+                        patente = preview_data['vehiculo'].split()[-1] if preview_data['vehiculo'] else 'SIN-PATENTE'
+
+                        guardar_historial_envio(
+                            email_destino=preview_data['email_destino'],
+                            cc_emails=preview_data['cc_emails'],
+                            nombre_cliente=nombre_cliente,
+                            vehiculo=preview_data['vehiculo'],
+                            patente=patente,
+                            asunto=asunto_editado,
+                            cuerpo=email_editado,
+                            exito=True,
+                            mensaje=mensaje,
+                            duracion_ms=duracion_ms
+                        )
+                    else:
+                        st.session_state.mail_resultado = {
+                            'exito': False,
+                            'error': mensaje
+                        }
+
+                    st.session_state.mail_preview_data = None
+                    st.rerun()
+
+    # Resultado
+    if st.session_state.mail_resultado:
+        st.markdown('---')
+        st.subheader('3. Resultado')
+
+        if st.session_state.mail_resultado['exito']:
+            st.success('✅ Correo enviado exitosamente')
+            st.metric('📧 Destinatario', st.session_state.mail_resultado['email'])
+
+            if st.session_state.mail_resultado.get('cc_emails'):
+                with st.expander('📋 Copias visibles (CC)'):
+                    for email in st.session_state.mail_resultado['cc_emails']:
+                        st.caption(f'• {email}')
+
+            st.metric('🕐 Fecha', st.session_state.mail_resultado['fecha'])
+            st.caption(st.session_state.mail_resultado['mensaje'])
+
+            if st.button('🔄 Enviar Otro Correo', use_container_width=True):
+                st.session_state.mail_resultado = None
+                st.session_state.mail_preview_data = None
+                st.rerun()
+        else:
+            st.error('❌ Error al enviar correo')
+            st.error(st.session_state.mail_resultado['error'])
+
+            if st.button('🔄 Reintentar', use_container_width=True):
+                st.session_state.mail_resultado = None
+                st.rerun()
 
     st.stop()
 

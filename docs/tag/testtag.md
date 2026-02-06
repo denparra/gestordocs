@@ -1,12 +1,12 @@
-Nombre: CARLOS VIVIANO VERA velez
+Nombre: CARLOS primera  velez
 
 RUT: 22.259.120-6
 
-Direccion: PUENTE CHUQUICAMATA 814, LA CALERA.
+Direccion: PUENTE alto 814, LA CALERA.
 
 Telefono: 911111111
 
-Correo: juan.vera@cencocal.cl
+Correo: carlos.primera@cencocal.cl
 
-PATENTE: TRYU.55-4
-TAG 111258369
+PATENTE: dddd.55-4
+TAG 111258444

@@ -1,0 +1,130 @@
+# Mail de Cierre - Configuración Centralizada
+# Editado: 2026-02-05
+
+# ============================================================================
+# REMITENTE Y RESPUESTAS
+# ============================================================================
+remitente:
+  nombre: "Dennys Parra - Queirolo"
+  email: "dparra@queirolo.cl"
+  reply_to: "dparra@queirolo.cl"  # Email para respuestas
+
+# ============================================================================
+# COPIAS OCULTAS (BCC) - DESHABILITADO (Se usará CC visible en su lugar)
+# ============================================================================
+bcc:
+  enabled: false  # BCC deshabilitado - usar CC visible en la UI
+  addresses: []
+  rules: []
+
+# ============================================================================
+# COPIAS VISIBLES (CC) - Predeterminados
+# ============================================================================
+cc:
+  enabled: true  # Activar CC predeterminados
+  addresses:
+    - dparra@queirolo.cl
+    - barbara.acosta@queirolo.cl
+    - mario@queirolo.cl
+    - ksarria@queirolo.cl
+    #- dennys7411@gmail.com
+  # Permitir que el usuario agregue más CC en la UI
+  allow_additional: true
+
+# ============================================================================
+# PLANTILLAS
+# ============================================================================
+plantillas:
+  default: "plantilla.md"
+  # Futuro: múltiples plantillas
+  alternativas:
+    - nombre: "Cierre Premium"
+      archivo: "plantilla_premium.md"
+      condicion: "precio > 25000000"
+    - nombre: "Cierre Estándar"
+      archivo: "plantilla.md"
+      condicion: "default"
+
+# ============================================================================
+# PERSONALIZACIÓN VISUAL
+# ============================================================================
+visual:
+  firma:
+    incluir: true
+    texto: |
+      Dennys Parra
+      Ejecutivo de Ventas
+      +569 7540 0946
+      Av. Las condes 12461, Local 4A. Las condes
+      www.queirolo.cl
+
+      Mas de 60 años en tu camino.
+
+  # Formato de email
+  formato:
+    tipo: "plain"  # plain | html
+    charset: "utf-8"
+    line_break: "\n"  # \n para plain, <br> para html
+
+# ============================================================================
+# COMPORTAMIENTO
+# ============================================================================
+comportamiento:
+  # Confirmación antes de enviar
+  requiere_confirmacion: true
+
+  # Vista previa por defecto
+  preview_default: false
+
+  # Cooldown entre envíos (segundos)
+  cooldown_segundos: 30
+
+  # Reintentos automáticos en caso de error
+  max_reintentos: 2
+  delay_reintentos_seg: 5
+
+# ============================================================================
+# HISTORIAL DE ENVÍOS
+# ============================================================================
+historial:
+  enabled: true
+  directorio: "docs/correo-cierre/enviados"
+  formato: "json"  # json | txt
+  campos_ofuscados:
+    - email_destinatario  # Ofuscar para privacidad
+    - cc_addresses
+  # Límite de archivos (rotar si excede)
+  max_archivos: 100
+  # Incluir cuerpo completo del email
+  incluir_cuerpo: true
+
+# ============================================================================
+# VALIDACIONES
+# ============================================================================
+validaciones:
+  # Longitud mínima de campos
+  minimo_caracteres:
+    vehiculo: 5
+    precio: 5
+    fecha_pago: 5
+
+  # Dominios de email permitidos (vacío = todos)
+  dominios_permitidos: []
+
+  # Dominios de email bloqueados
+  dominios_bloqueados:
+    - tempmail.com
+    - guerrillamail.com
+
+# ============================================================================
+# DESARROLLO Y DEBUG
+# ============================================================================
+desarrollo:
+  # Modo sandbox (no envía emails reales)
+  sandbox_mode: false
+
+  # Email de prueba (si sandbox_mode = true)
+  email_prueba: "test@queirolo.cl"
+
+  # Logging extendido
+  verbose_logging: false

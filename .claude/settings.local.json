@@ -1,7 +1,12 @@
 {
   "permissions": {
     "allow": [
-      "Bash(wc:*)"
+      "Bash(wc:*)",
+      "Bash(dir:*)",
+      "Bash(python -m pytest:*)",
+      "Bash(python -m py_compile:*)",
+      "Bash(python test_asunto.py:*)",
+      "Bash(del:*)"
     ]
   }
 }

@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "timestamp": "2026-02-05T21:01:29.109861",
+    "usuario": "dparra@queirolo.cl",
+    "version_app": "1.0.0"
+  },
+  "destinatario": {
+    "email": "BI***@****.COM",
+    "nombre_cliente": "AGUSTINA BELLIDO"
+  },
+  "cc": {
+    "count": 4,
+    "addresses": [
+      "dp***@****.cl",
+      "ba***@****.cl",
+      "ma***@****.cl",
+      "ks***@****.cl"
+    ]
+  },
+  "vehiculo": {
+    "descripcion": "MERCEDES BENZ A200 AUT  2017 JRLP.76-4",
+    "patente": "JRLP.76-4"
+  },
+  "email": {
+    "asunto": "Confirmación de Cierre de Negocio – MERCEDES BENZ A200 AUT  2017 JRLP.76-4",
+    "cuerpo_preview": "Buenas tardes estimado/a AGUSTINA BELLIDO:\n\nJunto con saludar, le informamos con mucha alegría que y...",
+    "cuerpo_completo": "Buenas tardes estimado/a AGUSTINA BELLIDO:\n\nJunto con saludar, le informamos con mucha alegría que ya contamos con el cierre de su vehículo MERCEDES BENZ A200 AUT  2017 JRLP.76-4, tal como fue conversado previamente con don Mario Queirolo.\nAgradecemos sinceramente la confianza depositada en nosotros. Ante cualquier duda o información adicional que requiera, estamos totalmente disponibles para asistirle.\n\nMONTO LIQUIDO A RECIBIR $16.000.000\n\nDATOS DEL PROPIETARIO\nNombre : AGUSTINA BELLIDO\nR.U.N. : 24.425.426-8\nFec. adquisición: 20-10-2023\n\nDurante los próximos días estaremos finalizando el proceso. La fecha estimada de pago es entre VIERNES 20-02-26 Y LUNES 23-02-26.\n\nIMPORTANTE\n\n1 - Una vez confirmados los fondos en cuenta, procederemos a la firma de contratos el día hábil siguiente, entre 13:30 y 17:00 hrs.\n\n2 - Envíe por esta vía los datos bancarios del propietario según Registro Civil para efectuar el pago en la fecha correspondiente.\n\n3 - Enviar cédula de identidad por ambas caras.\n\nAgradecemos nuevamente la confianza al consignar su vehículo con nosotros. Estamos para acompañarle en todo el proceso.\n\nDennys Parra\nEjecutivo de Ventas\n+56 9 7540 0946\nAv. Las Condes 12461, Local 4A – Las Condes\nwww.queirolo.cl\n\nMás de 60 años en tu camino"
+  },
+  "resultado": {
+    "exito": true,
+    "mensaje": "Email enviado exitosamente a BIANCHIMART2@GMAIL.COM (+4 CC)",
+    "duracion_ms": 6455
+  }
+}

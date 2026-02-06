@@ -1,0 +1,32 @@
+{
+  "metadata": {
+    "timestamp": "2026-02-05T20:11:34.077314",
+    "usuario": "dparra@queirolo.cl",
+    "version_app": "1.0.0"
+  },
+  "destinatario": {
+    "email": "DE***@****.COM",
+    "nombre_cliente": "DENNYS EDUARDO PARRA GRANADILLO"
+  },
+  "cc": {
+    "count": 2,
+    "addresses": [
+      "dp***@****.cl",
+      "de***@****.com"
+    ]
+  },
+  "vehiculo": {
+    "descripcion": "HYUNDAI  ELANTRA GLS 1.6 2012 DRLZ.16-3",
+    "patente": "DRLZ.16-3"
+  },
+  "email": {
+    "asunto": "Cierre de negocio - HYUNDAI ELANTRA GLS 1.6",
+    "cuerpo_preview": "\n\n\n\n\n\nBuenas tardes estimados DENNYS EDUARDO PARRA GRANADILLO [EJEMPLO \"ORIANA ISOLINA ARAYA AVENDAñ...",
+    "cuerpo_completo": "\n\n\n\n\n\nBuenas tardes estimados DENNYS EDUARDO PARRA GRANADILLO [EJEMPLO \"ORIANA ISOLINA ARAYA AVENDAñO\"], la presente es para informarle que ya tenemos cierre de su vehículo HYUNDAI  ELANTRA GLS 1.6 2012 DRLZ.16-3 [EJEMPLO \"JEEP GRAND CHEROKEE LTD 4X4 3.6 AUT 2019 KVSX.14-3\"],  según lo conversado con don mario queirolo, agradecemos la confianza depositada, ante cualquier información que requiera no dude en llamarnos.\n                               LIQUIDO A RECIBIR $6.000.000 [EJEMPLO \"LIQUIDO A RECIBIR $17.000.000\"]\nDATOS DEL PROPIETARIO\nNombre : DENNYS EDUARDO PARRA GRANADILLO\nR.U.N. : 26.002.284-9\nFec. adquisición: 15-05-2020\n[EJEMPLO\n\"DATOS DEL PROPIETARIO \nNombre : ORIANA ISOLINA ARAYA AVENDAñO \nR.U.N. : 10.982.440-2 \nFec. adquisición: 20-09-2018 \nRepertorio : RVM CATEDRAL\"]\n\n                  EN LOS PROXIMOS DIAS ESTAREMOS FINIQUITADO NEGOCIO, FECHA DE PAGO ENTRE 15-02-26 AL 18-02-26 [EJEMPLO \"10-02-2026 AL 13-02-2026\"]\n\n                                               IMPORTANTE\n1.       UNA VEZ CONFIRMADO FONDOS EN CUENTA, PROCEDEMOS A FIRMAR CONTRATOS EL DIA HABIL SIGUIENTE ENTRE 13:30 – 17:00.\n2.       ENVIEME POR ESTA VIA DATOS BANCARIOS PARA PROCEDER A PAGO EL DIA CORRESPONDIENTE (DATOS BANCARIOS DE DUEÑO DEL AUTO SEGÚN REGISTRO CIVIL). \n3.       ENVIAR LO SIGUIENTES DATOS PARA PROCESAR TRANSFERENCIA PREVIA RECEPCION DE PAGO.   \n4.        ENVIAR CARNET AMBAS CARAS \n\nDe antemano gracias por la confianza depositada al consignar su auto con nosotros.!\n\n<firma>\nDennys Parra\nEjecutivo de Ventas\n+569 7540 0946\nAv. Las condes 12461, Local 4A. Las condes\nwww.queirolo.cl\n\nMas de 60 años en tu camino.\n</firma>"
+  },
+  "resultado": {
+    "exito": true,
+    "mensaje": "Email enviado exitosamente a DENNYS74111@GMAIL.COM (+2 CC)",
+    "duracion_ms": 6965
+  }
+}
