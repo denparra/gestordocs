@@ -1,0 +1,84 @@
+# ============================================
+# STREAMLIT CONFIGURATION FOR PRODUCTION
+# Optimizado para Railway.app
+# ============================================
+
+[server]
+# Puerto - Railway asigna automáticamente vía $PORT
+port = 8501
+
+# Dirección - 0.0.0.0 permite conexiones externas
+address = "0.0.0.0"
+
+# Headless mode - No abrir navegador en servidor
+headless = true
+
+# CORS - Permitir conexiones desde Railway domain
+enableCORS = true
+enableXsrfProtection = true
+
+# WebSocket - Configuración crítica para Railway
+enableWebsocketCompression = true
+
+# Session management - CLAVE para resolver duplicados
+maxUploadSize = 200
+
+# Cookie secret - Genera uno con: python -c "import secrets; print(secrets.token_hex(32))"
+# IMPORTANTE: Usa variable de entorno STREAMLIT_SERVER_COOKIE_SECRET en Railway
+# cookieSecret = "tu-secret-aqui"  # NO hardcodear, usar env var
+
+# ============================================
+# BROWSER
+# ============================================
+
+[browser]
+# No recopilar stats de uso
+gatherUsageStats = false
+
+# Server address - Railway proporciona URL
+# serverAddress = "tu-app.railway.app"  # Railway lo maneja automáticamente
+
+# ============================================
+# RUNNER
+# ============================================
+
+[runner]
+# Magic enabled - Mostrar variables automáticamente
+magicEnabled = true
+
+# Post script run behavior
+postScriptGC = true
+
+# ============================================
+# CLIENT
+# ============================================
+
+[client]
+# Show error details
+showErrorDetails = true
+
+# Toolbar mode - "minimal" para producción
+toolbarMode = "minimal"
+
+# ============================================
+# LOGGER
+# ============================================
+
+[logger]
+# Log level - "info" para producción, "debug" para troubleshooting
+level = "info"
+
+# Message format
+messageFormat = "%(asctime)s %(levelname)s: %(message)s"
+
+# ============================================
+# THEME (Opcional)
+# ============================================
+
+[theme]
+# base = "light"
+# primaryColor = "#FF4B4B"
+# backgroundColor = "#FFFFFF"
+# secondaryBackgroundColor = "#F0F2F6"
+# textColor = "#262730"
+# font = "sans serif"
