@@ -287,6 +287,176 @@ def _auth_init_state() -> None:
         st.session_state.auth_lock_until = None
 
 
+def _init_ui_state() -> None:
+    if 'view' not in st.session_state:
+        st.session_state.view = 'menu'
+    if 'theme' not in st.session_state:
+        st.session_state.theme = 'light'
+
+
+def _apply_global_theme() -> None:
+    theme = st.session_state.get('theme', 'light')
+    if theme == 'dark':
+        app_bg = 'radial-gradient(circle at 16% 14%, #20232a 0%, #15181f 56%, #0f1117 100%)'
+        card_bg = 'rgba(24, 30, 40, 0.72)'
+        border = 'rgba(255, 255, 255, 0.10)'
+        text = '#f2f4f8'
+        muted = '#b3bcc8'
+        sidebar_bg = 'rgba(17, 21, 28, 0.86)'
+        input_bg = 'rgba(17, 21, 28, 0.9)'
+        btn_bg = 'linear-gradient(135deg, #2a3240, #222a36)'
+        btn_text = '#f4f6fb'
+        btn_border = 'rgba(255, 255, 255, 0.18)'
+        btn_hover_bg = 'linear-gradient(135deg, #313a4a, #283243)'
+        btn_shadow = 'rgba(0, 0, 0, 0.28)'
+        btn_disabled_bg = '#1f2632'
+        btn_disabled_text = '#7f8a98'
+        btn_primary_bg = 'linear-gradient(135deg, #f29b38, #f0672f)'
+        btn_primary_text = '#ffffff'
+        btn_primary_border = 'rgba(243, 130, 52, 0.6)'
+        btn_primary_hover_bg = 'linear-gradient(135deg, #f4a748, #ef5a28)'
+        btn_primary_shadow = 'rgba(240, 95, 44, 0.34)'
+        placeholder_text = '#9eabbc'
+        input_text = '#eef3fb'
+        caret_color = '#f4f7ff'
+    else:
+        app_bg = 'radial-gradient(circle at 16% 14%, #f5f3ef 0%, #f7f7fb 44%, #f2f6f4 100%)'
+        card_bg = 'rgba(255, 255, 255, 0.82)'
+        border = 'rgba(20, 30, 40, 0.10)'
+        text = '#1d2733'
+        muted = '#5b6067'
+        sidebar_bg = 'rgba(255, 255, 255, 0.78)'
+        input_bg = 'rgba(255, 255, 255, 0.95)'
+        btn_bg = 'linear-gradient(135deg, #f8fafc, #eef3f8)'
+        btn_text = '#1f2a37'
+        btn_border = 'rgba(20, 30, 40, 0.22)'
+        btn_hover_bg = 'linear-gradient(135deg, #f2f7fd, #e7eef7)'
+        btn_shadow = 'rgba(15, 23, 42, 0.10)'
+        btn_disabled_bg = '#e7ebf0'
+        btn_disabled_text = '#7b8794'
+        btn_primary_bg = 'linear-gradient(135deg, #f28f2c, #f05f2c)'
+        btn_primary_text = '#ffffff'
+        btn_primary_border = 'rgba(240, 95, 44, 0.55)'
+        btn_primary_hover_bg = 'linear-gradient(135deg, #f49f43, #ee5425)'
+        btn_primary_shadow = 'rgba(240, 95, 44, 0.24)'
+        placeholder_text = '#6b7785'
+        input_text = '#1f2a37'
+        caret_color = '#1f2a37'
+
+    st.markdown(
+        f"""
+        <style>
+        [data-testid="stAppViewContainer"] {{
+            background: {app_bg};
+        }}
+        [data-testid="stHeader"] {{
+            background: transparent;
+        }}
+        [data-testid="stSidebar"] {{
+            background: {sidebar_bg};
+            border-right: 1px solid {border};
+        }}
+        .block-container {{
+            color: {text};
+        }}
+        [data-testid="stMarkdownContainer"] p,
+        [data-testid="stMarkdownContainer"] li,
+        [data-testid="stCaptionContainer"] p,
+        [data-testid="stMetricValue"] {{
+            color: {text};
+        }}
+        [data-testid="stMetricLabel"] p {{
+            color: {muted};
+        }}
+        [data-baseweb="input"] > div,
+        [data-baseweb="textarea"] > div,
+        [data-baseweb="select"] > div,
+        [data-testid="stDateInputField"] {{
+            background: {input_bg};
+            border: 1px solid {border};
+        }}
+        [data-baseweb="input"] input,
+        [data-baseweb="textarea"] textarea,
+        [data-baseweb="select"] input {{
+            color: {input_text};
+            -webkit-text-fill-color: {input_text};
+            caret-color: {caret_color};
+        }}
+        [data-baseweb="input"] input::placeholder,
+        [data-baseweb="textarea"] textarea::placeholder,
+        [data-baseweb="select"] input::placeholder {{
+            color: {placeholder_text};
+            -webkit-text-fill-color: {placeholder_text};
+            opacity: 1;
+        }}
+        [data-testid="stExpander"] {{
+            background: {card_bg};
+            border: 1px solid {border};
+            border-radius: 12px;
+        }}
+        .stButton > button,
+        .stDownloadButton > button,
+        [data-testid="stFormSubmitButton"] > button {{
+            color: {btn_text};
+            background: {btn_bg};
+            border: 1px solid {btn_border};
+            border-radius: 12px;
+            box-shadow: 0 6px 14px {btn_shadow};
+            transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
+        }}
+        .stButton > button:hover,
+        .stDownloadButton > button:hover,
+        [data-testid="stFormSubmitButton"] > button:hover {{
+            color: {btn_text};
+            background: {btn_hover_bg};
+            border: 1px solid {btn_border};
+            transform: translateY(-1px);
+            box-shadow: 0 9px 18px {btn_shadow};
+        }}
+        .stButton > button:focus-visible,
+        .stDownloadButton > button:focus-visible,
+        [data-testid="stFormSubmitButton"] > button:focus-visible {{
+            outline: 2px solid rgba(242, 143, 44, 0.75);
+            outline-offset: 1px;
+        }}
+        .stButton > button:disabled,
+        .stDownloadButton > button:disabled,
+        [data-testid="stFormSubmitButton"] > button:disabled {{
+            color: {btn_disabled_text};
+            background: {btn_disabled_bg};
+            border: 1px solid {btn_border};
+            box-shadow: none;
+            transform: none;
+            opacity: 0.95;
+        }}
+        .stButton > button[kind="primary"],
+        .stDownloadButton > button[kind="primary"],
+        [data-testid="stFormSubmitButton"] > button[kind="primary"],
+        .stButton > button[data-testid="baseButton-primary"],
+        .stDownloadButton > button[data-testid="baseButton-primary"],
+        [data-testid="stFormSubmitButton"] > button[data-testid="baseButton-primary"] {{
+            color: {btn_primary_text};
+            background: {btn_primary_bg};
+            border: 1px solid {btn_primary_border};
+            box-shadow: 0 10px 18px {btn_primary_shadow};
+        }}
+        .stButton > button[kind="primary"]:hover,
+        .stDownloadButton > button[kind="primary"]:hover,
+        [data-testid="stFormSubmitButton"] > button[kind="primary"]:hover,
+        .stButton > button[data-testid="baseButton-primary"]:hover,
+        .stDownloadButton > button[data-testid="baseButton-primary"]:hover,
+        [data-testid="stFormSubmitButton"] > button[data-testid="baseButton-primary"]:hover {{
+            color: {btn_primary_text};
+            background: {btn_primary_hover_bg};
+            border: 1px solid {btn_primary_border};
+            box-shadow: 0 12px 22px {btn_primary_shadow};
+        }}
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
 def _require_login() -> None:
     if not settings.app_auth_enabled:
         return
@@ -347,6 +517,9 @@ def _require_login() -> None:
 
     st.stop()
 
+
+_init_ui_state()
+_apply_global_theme()
 
 _require_login()
 
@@ -469,12 +642,6 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# Navegación simple
-if 'view' not in st.session_state:
-    st.session_state.view = 'menu'
-if 'theme' not in st.session_state:
-    st.session_state.theme = 'light'
-
 if st.session_state.view == 'menu':
     st.markdown('<div id="menu-mode"></div>', unsafe_allow_html=True)
     # Toggle de tema
@@ -485,7 +652,10 @@ if st.session_state.view == 'menu':
     with col_toggle:
         st.markdown('<div class="menu-toggle">', unsafe_allow_html=True)
         is_dark = st.toggle('Dark mode', value=st.session_state.theme == 'dark')
-        st.session_state.theme = 'dark' if is_dark else 'light'
+        next_theme = 'dark' if is_dark else 'light'
+        if next_theme != st.session_state.theme:
+            st.session_state.theme = next_theme
+            st.rerun()
         st.markdown('</div>', unsafe_allow_html=True)
 
     # CSS por tema
