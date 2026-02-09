@@ -611,6 +611,7 @@ if st.session_state.view == 'mail':
         guardar_historial_envio,
         get_config,
         cargar_cc_predeterminados,
+        parsear_ficha_registro,
     )
     from time import time as get_time
 
@@ -655,17 +656,23 @@ if st.session_state.view == 'mail':
         st.subheader('1. Ingresar Datos del Cliente')
 
         with st.form('mail_form'):
-            datos_propietario = st.text_area(
-                'DATOS DEL PROPIETARIO (debe contener "Nombre : ...")',
-                height=150,
-                placeholder=example_mail_text or 'Nombre : ORIANA ISOLINA ARAYA AVENDAÑO\nR.U.N. : 10.982.440-2\n...',
-                help='Bloque de texto que debe contener la línea "Nombre : NOMBRE_COMPLETO"'
-            )
-
-            vehiculo = st.text_input(
-                'Vehículo',
-                placeholder='JEEP GRAND CHEROKEE LTD 4X4 3.6 AUT 2019 KVSX.14-3',
-                help='Descripción completa del vehículo'
+            ficha_registro = st.text_area(
+                'Ficha Registro (pegar bloque completo)',
+                height=250,
+                placeholder='''Inscripción : FPYK.18-2
+DATOS DEL VEHICULO
+Tipo Vehículo : AUTOMOVIL Año : 2013
+Marca : CHEVROLET
+Modelo : SAIL II 1.4
+Nro. Motor : LCU130020645
+Nro. Chasis : LSGSA58M4DY101211
+Color : ROJO
+...
+DATOS DEL PROPIETARIO
+Nombre : CAMILO IGNACIO MENA MALDONADO
+R.U.N. : 19.001.667-6
+Fec. adquisición: 07-05-2018''',
+                help='Pegue el bloque completo con Inscripción, Datos del Vehículo y Datos del Propietario'
             )
 
             precio_acordado = st.text_input(
@@ -723,6 +730,16 @@ if st.session_state.view == 'mail':
 
         if submit_mail:
             st.session_state.mail_resultado = None
+
+            # Parsear Ficha Registro para extraer datos
+            parsed_ficha = parsear_ficha_registro(ficha_registro)
+            if not parsed_ficha:
+                st.error('❌ No se pudo parsear la Ficha Registro. Verifique que contenga: Inscripción, Marca, Modelo, Año, Nombre, R.U.N. y Fec. adquisición')
+                st.stop()
+
+            # Extraer variables para el resto del flujo (mantiene compatibilidad)
+            datos_propietario = parsed_ficha['datos_propietario_bloque']
+            vehiculo = parsed_ficha['vehiculo_final']
 
             # Parsear CC emails
             cc_emails = []

@@ -164,6 +164,91 @@ def extraer_nombre_cliente(texto: str) -> str | None:
     return None
 
 
+def parsear_ficha_registro(texto: str) -> dict | None:
+    """
+    Parsea bloque 'Ficha Registro' y extrae datos de vehículo y propietario.
+
+    Formato de entrada esperado:
+        Inscripción : FPYK.18-2
+        DATOS DEL VEHICULO
+        Tipo Vehículo : AUTOMOVIL Año : 2013
+        Marca : CHEVROLET
+        Modelo : SAIL II 1.4
+        ...
+        DATOS DEL PROPIETARIO
+        Nombre : CAMILO IGNACIO MENA MALDONADO
+        R.U.N. : 19.001.667-6
+        Fec. adquisición: 07-05-2018
+
+    Args:
+        texto: Bloque de texto completo pegado por el usuario
+
+    Returns:
+        dict con keys:
+            - vehiculo_final: 'CHEVROLET SAIL II 1.4 2013 FPYK.18-2'
+            - datos_propietario_bloque: texto formateado para template
+            - nombre_cliente: 'CAMILO IGNACIO MENA MALDONADO'
+        None si faltan campos obligatorios
+    """
+    if not texto or not texto.strip():
+        return None
+
+    # Regex tolerantes a espacios y variaciones
+    def buscar(pattern: str) -> str | None:
+        match = re.search(pattern, texto, flags=re.IGNORECASE | re.MULTILINE)
+        return match.group(1).strip() if match else None
+
+    # Extraer campos
+    inscripcion = buscar(r'Inscripci[oó]n\s*:\s*(.+?)(?:\r?\n|$)')
+    marca = buscar(r'Marca\s*:\s*(.+?)(?:\r?\n|$)')
+    modelo = buscar(r'Modelo\s*:\s*(.+?)(?:\r?\n|$)')
+    anio = buscar(r'A[ñn]o\s*:\s*(\d{4})')
+    nombre = buscar(r'Nombre\s*:\s*(.+?)(?:\r?\n|$)')
+    run = buscar(r'R\.?U\.?N\.?\s*:\s*(.+?)(?:\r?\n|$)')
+    fec_adquisicion = buscar(r'Fec\.?\s*adquisici[oó]n\s*:?\s*(.+?)(?:\r?\n|$)')
+
+    # Validar campos obligatorios
+    campos_faltantes = []
+    if not inscripcion:
+        campos_faltantes.append('Inscripción')
+    if not marca:
+        campos_faltantes.append('Marca')
+    if not modelo:
+        campos_faltantes.append('Modelo')
+    if not anio:
+        campos_faltantes.append('Año')
+    if not nombre:
+        campos_faltantes.append('Nombre')
+    if not run:
+        campos_faltantes.append('R.U.N.')
+    if not fec_adquisicion:
+        campos_faltantes.append('Fec. adquisición')
+
+    if campos_faltantes:
+        return None
+
+    # Construir vehículo final: MARCA MODELO AÑO INSCRIPCION
+    vehiculo_final = f"{marca} {modelo} {anio} {inscripcion}".upper()
+
+    # Construir bloque DATOS DEL PROPIETARIO para template
+    datos_propietario_bloque = f"""DATOS DEL PROPIETARIO
+Nombre : {nombre.upper()}
+R.U.N. : {run}
+Fec. adquisición: {fec_adquisicion}"""
+
+    return {
+        'vehiculo_final': vehiculo_final,
+        'datos_propietario_bloque': datos_propietario_bloque,
+        'nombre_cliente': nombre.upper(),
+        'inscripcion': inscripcion.upper(),
+        'marca': marca.upper(),
+        'modelo': modelo.upper(),
+        'anio': anio,
+        'run': run,
+        'fec_adquisicion': fec_adquisicion
+    }
+
+
 # ============================================================================
 # GENERACIÓN DE EMAIL
 # ============================================================================
