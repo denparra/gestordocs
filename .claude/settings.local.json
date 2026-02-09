@@ -6,7 +6,20 @@
       "Bash(python -m pytest:*)",
       "Bash(python -m py_compile:*)",
       "Bash(python test_asunto.py:*)",
-      "Bash(del:*)"
+      "Bash(del:*)",
+      "Bash(git rm:*)",
+      "Bash(test:*)",
+      "Bash(git mv:*)",
+      "Bash(move SOLUCION_RAILWAY.md docsdeploySOLUCION_RAILWAY.md)",
+      "Bash(move:*)",
+      "Bash(move VERIFICAR_LIMPIEZA.sh docsseguridadVERIFICAR_LIMPIEZA.sh)",
+      "Bash(move docsARCHIVOS_PROTEGIDOS.md docsseguridadARCHIVOS_PROTEGIDOS.md)",
+      "Bash(move docsRECUPERACION_SEGURIDAD.md docsseguridadRECUPERACION_SEGURIDAD.md)",
+      "Bash(move docsRAILWAY_DEPLOYMENT.md docsdeployRAILWAY_DEPLOYMENT.md)",
+      "Bash(python:*)",
+      "Bash(pip install:*)",
+      "Bash(timeout 8 bash -c 'uvicorn api:app --host 127.0.0.1 --port 8000 &\nsleep 3\ncurl -s http://127.0.0.1:8000/health\necho \"\"\"\"\ncurl -s -o /dev/null -w \"\"%{http_code}\"\" -H \"\"Authorization: Bearer changeme\"\" -H \"\"Content-Type: application/json\"\" -d \"\"{\\\\\"\"tipo\\\\\"\":\\\\\"\"autotramite\\\\\"\",\\\\\"\"datos_raw\\\\\"\":\\\\\"\"test\\\\\"\",\\\\\"\"correlation_id\\\\\"\":\\\\\"\"test-1\\\\\"\"}\"\" http://127.0.0.1:8000/api/validate\necho \"\"\"\"\ncurl -s -o /dev/null -w \"\"%{http_code}\"\" http://127.0.0.1:8000/api/validate\necho \"\" \\(no auth\\)\"\"\nkill %1 2>/dev/null')",
+      "Bash(timeout 8 bash -c:*)"
     ]
   }
 }
