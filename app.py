@@ -944,11 +944,20 @@ Fec. adquisición: 07-05-2018''',
                 help='Precio acordado con el cliente'
             )
 
-            fecha_pago = st.text_input(
+            fecha_pago_rango = st.date_input(
                 'Fecha de Pago',
-                placeholder='10-02-2026 AL 13-02-2026',
-                help='Rango de fechas de pago'
+                value=[],
+                format='DD-MM-YYYY',
+                help='Selecciona el rango de fechas de pago (inicio y termino)',
+                key='fecha_pago_rango'
             )
+
+            if isinstance(fecha_pago_rango, tuple) and len(fecha_pago_rango) == 2:
+                fecha_inicio, fecha_termino = fecha_pago_rango
+                fecha_pago = f"{fecha_inicio.strftime('%d-%m-%Y')} AL {fecha_termino.strftime('%d-%m-%Y')}"
+                st.caption(f'Fecha de Pago seleccionada: {fecha_pago}')
+            else:
+                fecha_pago = ''
 
             st.markdown('---')
 
