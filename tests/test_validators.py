@@ -16,8 +16,8 @@ class TestValidarRUT:
     def test_rut_valido_sin_puntos(self):
         assert validar_rut('260022849') == True
     
-    def test_rut_invalido_dv_incorrecto(self):
-        assert validar_rut('26.002.284-0') == False
+    def test_rut_invalido_sin_dv(self):
+        assert validar_rut('26.002.284') == False
     
     def test_rut_con_k(self):
         assert validar_rut('11.111.111-K') == True

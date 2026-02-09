@@ -29,7 +29,7 @@ class DatosPersona(BaseModel):
     def validar_rut_formato(cls, v: str) -> str:
         if not validar_rut(v):
             raise ValueError(
-                f'RUT invalido (sin puntos y con digito verificador, ej: 26002284-5): {v}'
+                f'RUT con formato inválido (ej: 26002284-5): {v}'
             )
         return formatear_rut(v)
     

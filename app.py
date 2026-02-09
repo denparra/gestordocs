@@ -16,6 +16,7 @@ from src.config import settings, validar_credenciales
 from src.models import parsear_texto_contrato, ContratoData
 from src.autotramite import crear_contrato_autotramite, LoginFailedError
 from src.logging_utils import get_logger
+from src.auth_utils import verify_password
 
 logger = get_logger(__name__, level=settings.log_level)
 
@@ -265,6 +266,98 @@ st.set_page_config(
     page_icon='📄',
     layout='centered'
 )
+
+
+def _auth_reset_session() -> None:
+    st.session_state.auth_ok = False
+    st.session_state.auth_user = None
+    st.session_state.auth_last_activity = None
+
+
+def _auth_init_state() -> None:
+    if 'auth_ok' not in st.session_state:
+        st.session_state.auth_ok = False
+    if 'auth_user' not in st.session_state:
+        st.session_state.auth_user = None
+    if 'auth_last_activity' not in st.session_state:
+        st.session_state.auth_last_activity = None
+    if 'auth_failed_attempts' not in st.session_state:
+        st.session_state.auth_failed_attempts = 0
+    if 'auth_lock_until' not in st.session_state:
+        st.session_state.auth_lock_until = None
+
+
+def _require_login() -> None:
+    if not settings.app_auth_enabled:
+        return
+
+    _auth_init_state()
+    now_ts = int(datetime.now().timestamp())
+
+    if not settings.app_auth_user or not settings.app_auth_password_hash:
+        st.error('APP_AUTH habilitado, pero falta APP_AUTH_USER o APP_AUTH_PASSWORD_HASH en .env')
+        st.stop()
+
+    if st.session_state.auth_ok:
+        timeout_seconds = max(settings.app_auth_session_minutes, 1) * 60
+        last_activity = st.session_state.auth_last_activity or now_ts
+        if (now_ts - int(last_activity)) > timeout_seconds:
+            _auth_reset_session()
+            st.warning('Sesion expirada por inactividad. Inicia sesion nuevamente.')
+        else:
+            st.session_state.auth_last_activity = now_ts
+            return
+
+    lock_until = st.session_state.auth_lock_until
+    locked = bool(lock_until and now_ts < int(lock_until))
+
+    st.title('Acceso Seguro')
+    st.caption('Inicia sesion para usar el panel de automatizaciones.')
+
+    if locked:
+        remaining = int(lock_until) - now_ts
+        st.error(f'Demasiados intentos fallidos. Espera {remaining}s para reintentar.')
+
+    with st.form('login_form', clear_on_submit=False):
+        username = st.text_input('Usuario')
+        password = st.text_input('Clave', type='password')
+        submit_login = st.form_submit_button('Ingresar', use_container_width=True)
+
+    if submit_login and not locked:
+        username_ok = username.strip() == settings.app_auth_user
+        password_ok = verify_password(password, settings.app_auth_password_hash)
+
+        if username_ok and password_ok:
+            st.session_state.auth_ok = True
+            st.session_state.auth_user = settings.app_auth_user
+            st.session_state.auth_last_activity = now_ts
+            st.session_state.auth_failed_attempts = 0
+            st.session_state.auth_lock_until = None
+            st.rerun()
+        else:
+            st.session_state.auth_failed_attempts += 1
+            max_attempts = max(settings.app_auth_max_attempts, 1)
+            if st.session_state.auth_failed_attempts >= max_attempts:
+                st.session_state.auth_lock_until = now_ts + max(settings.app_auth_lock_seconds, 30)
+                st.session_state.auth_failed_attempts = 0
+                st.error('Demasiados intentos fallidos. Acceso bloqueado temporalmente.')
+            else:
+                remaining = max_attempts - st.session_state.auth_failed_attempts
+                st.error(f'Credenciales invalidas. Intentos restantes: {remaining}')
+
+    st.stop()
+
+
+_require_login()
+
+if settings.app_auth_enabled:
+    with st.sidebar:
+        st.markdown('---')
+        st.caption(f"Usuario: {st.session_state.auth_user or '-'}")
+        if st.button('Cerrar sesion', use_container_width=True, key='logout_btn'):
+            _auth_reset_session()
+            st.session_state.view = 'menu'
+            st.rerun()
 
 # Estilos base para menú (variables de tema)
 st.markdown(

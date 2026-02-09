@@ -42,6 +42,14 @@ class Settings(BaseSettings):
     smtp_user: Optional[str] = None
     smtp_pass: Optional[str] = None
     smtp_secure: Optional[str] = 'none'  # 'tls', 'ssl', 'none', 'false'
+
+    # App auth (Streamlit login)
+    app_auth_enabled: bool = False
+    app_auth_user: Optional[str] = None
+    app_auth_password_hash: Optional[str] = None
+    app_auth_session_minutes: int = 30
+    app_auth_max_attempts: int = 5
+    app_auth_lock_seconds: int = 300
     
     # Valores por defecto del contrato
     generado_por_default: str = 'AUTORECENTE SPA (QUEIROLO)'

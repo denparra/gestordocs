@@ -1,0 +1,239 @@
+# ============================================
+# ARCHIVOS SENSIBLES Y CREDENCIALES
+# ============================================
+
+# Variables de entorno con credenciales
+.env
+.env.local
+.env.production
+.env.*.local
+
+# Historial de emails enviados (contiene datos reales de clientes)
+docs/correo-cierre/enviados/
+docs/correo-cierre/enviados/**
+
+# Screenshots que pueden contener información sensible
+screenshots/
+*.png
+*.jpg
+*.jpeg
+*.gif
+
+# Backups de base de datos o archivos con datos
+*.db
+*.sqlite
+*.sqlite3
+backups/
+
+# ============================================
+# PYTHON
+# ============================================
+
+# Virtual environment
+.venv/
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Unit test / coverage reports
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+.hypothesis/
+coverage.xml
+*.cover
+*.log
+.cache
+nosetests.xml
+pytestdebug.log
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# pyenv
+.python-version
+
+# Celery
+celerybeat-schedule
+celerybeat.pid
+
+# SageMath parsed files
+*.sage.py
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# pytype static type analyzer
+.pytype/
+
+# ============================================
+# IDE Y EDITORES
+# ============================================
+
+# Visual Studio Code
+.vscode/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# PyCharm
+.idea/
+*.iml
+*.iws
+.idea_modules/
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+*.swp
+*.swo
+*~
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+
+# ============================================
+# SISTEMA OPERATIVO
+# ============================================
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+.directory
+.Trash-*
+
+# ============================================
+# LOGS Y TEMPORALES
+# ============================================
+
+# Logs
+*.log
+logs/
+*.out
+*.err
+
+# Archivos temporales
+*.tmp
+*.temp
+*.bak
+*.swp
+*~.nib
+temp/
+tmp/
+
+# ============================================
+# PLAYWRIGHT
+# ============================================
+
+# Playwright browsers (pueden ser muy pesados)
+# Descomenta si no quieres versionar los navegadores
+# .playwright/
+
+# Playwright test results
+test-results/
+playwright-report/
+
+# ============================================
+# STREAMLIT
+# ============================================
+
+# Streamlit secrets (alternativa a .env)
+.streamlit/secrets.toml
+
+# ============================================
+# PROYECTO ESPECÍFICO
+# ============================================
+
+# Archivos de prueba locales
+test_email_local.py
+prueba_*.py
+
+# Datos de desarrollo
+dev_data/
+test_data/
+
+# Documentación generada
+docs/_build/
+docs/.buildinfo
+
+# ============================================
+# NOTAS Y DESARROLLO
+# ============================================
+
+# Notas personales
+NOTAS.md
+TODO.md
+BORRADOR.md

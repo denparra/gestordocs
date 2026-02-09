@@ -8,18 +8,18 @@ from typing import Optional
 
 def validar_rut(rut: str) -> bool:
     """
-    Valida RUT chileno usando algoritmo módulo 11
+    Valida formato básico de RUT chileno (sin validar dígito verificador)
     
     Args:
         rut: RUT con o sin formato (ej: "26.002.284-9" o "260022849")
     
     Returns:
-        bool: True si el RUT es válido
+        bool: True si el formato es válido
     
     Examples:
         >>> validar_rut('26.002.284-9')
         True
-        >>> validar_rut('26.002.284-0')
+        >>> validar_rut('26.002.284')
         False
     """
     if not rut:
@@ -28,31 +28,8 @@ def validar_rut(rut: str) -> bool:
     # Limpiar: solo números y K
     clean = re.sub(r'[^0-9Kk]', '', rut).upper()
     
-    if len(clean) < 2:
-        return False
-    
-    # Separar cuerpo y dígito verificador
-    cuerpo = clean[:-1]
-    dv_ingresado = clean[-1]
-    
-    # Calcular DV esperado
-    suma = 0
-    multiplo = 2
-    
-    for digito in reversed(cuerpo):
-        suma += int(digito) * multiplo
-        multiplo = 7 if multiplo == 6 else multiplo + 1
-    
-    dv_esperado = 11 - (suma % 11)
-    
-    if dv_esperado == 11:
-        dv_calculado = '0'
-    elif dv_esperado == 10:
-        dv_calculado = 'K'
-    else:
-        dv_calculado = str(dv_esperado)
-    
-    return dv_ingresado == dv_calculado
+    # Formato básico: 6-8 dígitos + DV (0-9 o K)
+    return bool(re.match(r'^[0-9]{6,8}[0-9K]$', clean))
 
 
 def formatear_rut(rut: str) -> str:

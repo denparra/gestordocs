@@ -24,7 +24,7 @@ python docs/tag/test_preview_tag.py
 
 ## Storage externo (implementado)
 Se puede subir PDFs a S3 o GCS si defines `PDF_STORAGE_BACKEND`.
-Consulta `RAILWAY_DEPLOY.md` para variables completas.
+Consulta `docs/deploy/RAILWAY_DEPLOY.md` para variables completas.
 
 ## Despliegue en Railway (listo)
 Incluido:

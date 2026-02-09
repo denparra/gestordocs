@@ -31,7 +31,7 @@
 ## Commit & Pull Request Guidelines
 - This checkout has no Git history; use concise, imperative commit subjects (example: `Add RUT edge-case validation`).
 - PRs should describe the change, list test commands run, and include Streamlit screenshots when UI changes are involved.
-- Update `docs/README.md` or `INSTRUCCIONES_TEST.md` when workflows or commands change.
+- Update `docs/autotramite/README.md` or `docs/autotramite/INSTRUCCIONES_TEST.md` when workflows or commands change.
 
 ## Security & Configuration Tips
 - Store credentials only in `.env`; never commit real values.

@@ -1,0 +1,402 @@
+{
+  "name": "Bot_Telegram_Autotramite",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message",
+          "callback_query"
+        ],
+        "messageTypes": [
+          "text",
+          "command"
+        ]
+      },
+      "id": "telegram-trigger",
+      "name": "Telegram Trigger",
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const userId = $json.message?.from?.id || $json.callback_query?.from?.id;\nconst allowedIds = $env.ADMIN_TELEGRAM_IDS.split(',').map(Number);\n\nif (!userId || !allowedIds.includes(userId)) {\n  // Ignora silenciosamente\n  return [];\n}\n\nreturn [{ json: $json }];\n"
+      },
+      "id": "whitelist-validation",
+      "name": "Whitelist Validation",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        220,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "is-start",
+              "leftValue": "={{ /^\\/start$/.test(($json.message?.text || $json.callback_query?.data || '').trim().toLowerCase()) }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      },
+      "id": "if-start",
+      "name": "Command /start?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        440,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "sendMessage",
+        "chatId": "={{ $json.message?.chat?.id || $json.callback_query?.message?.chat?.id }}",
+        "text": "Hola ADMIN.\n\nSelecciona el flujo a iniciar:\n(por ahora solo AutoTramite)",
+        "replyMarkup": {
+          "inline_keyboard": [
+            [
+              {
+                "text": "AutoTramite",
+                "callback_data": "AutoTramite"
+              }
+            ],
+            [
+              {
+                "text": "Cancelar",
+                "callback_data": "/cancel"
+              }
+            ]
+          ]
+        }
+      },
+      "id": "menu-principal",
+      "name": "Menu Principal",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [
+        700,
+        -160
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "is-autotramite",
+              "leftValue": "={{ /^(autotramite)$/i.test(($json.message?.text || $json.callback_query?.data || '').trim()) }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      },
+      "id": "if-autotramite",
+      "name": "AutoTramite?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        700,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "sendMessage",
+        "chatId": "={{ $json.message?.chat?.id || $json.callback_query?.message?.chat?.id }}",
+        "text": "AutoTramite - Registro de Contrato\n\nEnvia los datos en este formato:\n\nDATOS DEL VEHICULO\nMarca: HYUNDAI\nPatente: DRLZ.16-3\nModelo: ELANTRA GLS 1.6\nAno: 2012\n...\n\nDATOS DEL VENDEDOR\nNombre: JUAN CARLOS PEREZ GONZALEZ\nRUT: 12.345.678-9\nTelefono: +569 1234 5678\nEmail: vendedor@ejemplo.cl\n\nDATOS COMPRADOR\nNombre: MARIA ANDREA LOPEZ SILVA\nRUT: 11.222.333-4\n\nLuego recibiras un resumen. Responde 'confirmo' para continuar.\n/cancel para cancelar"
+      },
+      "id": "autotramite-instructions",
+      "name": "AutoTramite Instructions",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [
+        940,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "is-cancel",
+              "leftValue": "={{ /^\\/cancel$/.test(($json.message?.text || $json.callback_query?.data || '').trim().toLowerCase()) }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      },
+      "id": "if-cancel",
+      "name": "Command /cancel?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        940,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "sendMessage",
+        "chatId": "={{ $json.message?.chat?.id || $json.callback_query?.message?.chat?.id }}",
+        "text": "Operacion cancelada. Usa /start para comenzar de nuevo."
+      },
+      "id": "cancel-message",
+      "name": "Cancel Message",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [
+        1180,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "is-confirmo",
+              "leftValue": "={{ /^confirmo$/i.test(($json.message?.text || '').trim()) }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      },
+      "id": "if-confirmo",
+      "name": "Confirmo?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        1180,
+        520
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "sendMessage",
+        "chatId": "={{ $json.message?.chat?.id || $json.callback_query?.message?.chat?.id }}",
+        "text": "Procesando..."
+      },
+      "id": "procesando",
+      "name": "Procesando",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [
+        1420,
+        520
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "sendMessage",
+        "chatId": "={{ $json.message?.chat?.id || $json.callback_query?.message?.chat?.id }}",
+        "text": "Listo para ejecutar (pendiente Fase 3: integracion con Python)."
+      },
+      "id": "resultado-placeholder",
+      "name": "Resultado Placeholder",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [
+        1660,
+        520
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const text = ($json.message?.text || '').trim();\nconst lines = text.split(/\\r?\\n/).map(l => l.trim()).filter(Boolean);\nconst fields = {};\n\nfor (const line of lines) {\n  const match = line.match(/^([^:]+)\\s*:\\s*(.+)$/);\n  if (!match) continue;\n  const key = match[1].toLowerCase();\n  const value = match[2].trim();\n\n  if (key.includes('marca')) fields.marca = value;\n  else if (key.includes('patente') || key.includes('inscripcion')) fields.patente = value;\n  else if (key.includes('modelo')) fields.modelo = value;\n  else if (key.includes('ano') || key.includes('a\\u00f1o')) fields.ano = value;\n  else if (key.includes('rut')) fields.rut = value;\n  else if (key.includes('nombre')) fields.nombre = value;\n  else if (key.includes('telefono')) fields.telefono = value;\n  else if (key.includes('email') || key.includes('correo')) fields.email = value;\n}\n\nconst summaryLines = [];\nif (fields.patente) summaryLines.push(`Patente: ${fields.patente}`);\nif (fields.marca) summaryLines.push(`Marca: ${fields.marca}`);\nif (fields.modelo) summaryLines.push(`Modelo: ${fields.modelo}`);\nif (fields.ano) summaryLines.push(`Ano: ${fields.ano}`);\nif (fields.nombre) summaryLines.push(`Nombre: ${fields.nombre}`);\nif (fields.rut) summaryLines.push(`RUT: ${fields.rut}`);\nif (fields.telefono) summaryLines.push(`Telefono: ${fields.telefono}`);\nif (fields.email) summaryLines.push(`Email: ${fields.email}`);\nif (summaryLines.length == 0) {\n  summaryLines.push('No se detectaron campos. Revisa el formato y reenvia.');\n}\n\nreturn [{ json: { summary: summaryLines.join('\\n') } }];\n"
+      },
+      "id": "parse-datos",
+      "name": "Parse Datos",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1420,
+        720
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "sendMessage",
+        "chatId": "={{ $json.message?.chat?.id || $json.callback_query?.message?.chat?.id }}",
+        "text": "={{ 'Resumen de datos (preliminar):\\n\\n' + $json.summary + '\\n\\nSi todo esta OK, responde 'confirmo'.\\n/cancel para cancelar.' }}"
+      },
+      "id": "resumen-confirmacion",
+      "name": "Resumen y Confirmacion",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [
+        1660,
+        720
+      ]
+    }
+  ],
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Whitelist Validation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Whitelist Validation": {
+      "main": [
+        [
+          {
+            "node": "Command /start?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Command /start?": {
+      "main": [
+        [
+          {
+            "node": "Menu Principal",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "AutoTramite?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AutoTramite?": {
+      "main": [
+        [
+          {
+            "node": "AutoTramite Instructions",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Command /cancel?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Command /cancel?": {
+      "main": [
+        [
+          {
+            "node": "Cancel Message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Confirmo?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Confirmo?": {
+      "main": [
+        [
+          {
+            "node": "Procesando",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Parse Datos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Procesando": {
+      "main": [
+        [
+          {
+            "node": "Resultado Placeholder",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Datos": {
+      "main": [
+        [
+          {
+            "node": "Resumen y Confirmacion",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

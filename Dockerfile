@@ -38,6 +38,11 @@ RUN pip install --no-cache-dir -r requirements.txt \
 
 COPY . .
 
-# Railway provides $PORT
-EXPOSE 8080
-CMD ["/bin/sh", "-c", "streamlit run app.py --server.port ${PORT:-8080} --server.address 0.0.0.0"]
+# Railway provides $PORT for Streamlit, API runs on 8000
+EXPOSE 8080 8000
+
+# Dual startup: API (background) + Streamlit (foreground)
+COPY start.sh /start.sh
+RUN chmod +x /start.sh
+
+CMD ["/start.sh"]
