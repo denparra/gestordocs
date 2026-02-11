@@ -4,6 +4,7 @@ Basado en: Sección 5 del plan (selectores validados + estrategia de waits)
 """
 import asyncio
 import re
+import time
 from typing import Optional
 from playwright.async_api import async_playwright, Page, Browser, TimeoutError as PlaywrightTimeoutError
 
@@ -120,21 +121,29 @@ async def login_autotramite(page: Page) -> None:
         RecoverableError: Si hay problema de red/timeout (recuperable)
     """
     logger.info('Iniciando login en AutoTramite')
-    
+
     try:
         # Navegar a login
-        await page.goto(settings.autotramite_login_url, wait_until='networkidle', timeout=settings.timeout_navigation)
-        
+        _t0 = time.time()
+        logger.info(f'Navegando a {settings.autotramite_login_url}...')
+        await page.goto(settings.autotramite_login_url, wait_until='domcontentloaded', timeout=settings.timeout_navigation)
+        logger.info(f'Pagina login cargada en {time.time()-_t0:.2f}s. URL: {page.url}')
+
         # Llenar credenciales
+        logger.info('Llenando campo email...')
         await fill_field(page, SELECTORS['login_email'], settings.autotramite_email)
+        logger.info('Email OK. Llenando campo password...')
         await fill_field(page, SELECTORS['login_password'], settings.autotramite_password)
-        
+        logger.info('Password OK.')
+
         # Click login
+        logger.info('Click en boton login...')
         await click_button(page, SELECTORS['login_submit'], wait_navigation=True)
-        
+
         # Verificar que NO estamos en login.php (significa login exitoso)
         url_actual = page.url
-        
+        logger.info(f'Post-login URL: {url_actual}')
+
         if 'login.php' in url_actual:
             logger.error('Login fallido: aún en página de login')
             raise LoginFailedError('Credenciales inválidas o login fallido')
@@ -170,7 +179,9 @@ async def llenar_formulario(page: Page, datos: ContratoData) -> None:
     
     try:
         # Navegar al formulario
-        await page.goto(settings.autotramite_form_url, wait_until='networkidle', timeout=settings.timeout_navigation)
+        logger.info(f'Navegando al formulario: {settings.autotramite_form_url}...')
+        await page.goto(settings.autotramite_form_url, wait_until='domcontentloaded', timeout=settings.timeout_navigation)
+        logger.info(f'Formulario cargado. URL: {page.url}')
         
         # VEHICULO
         await fill_field(page, SELECTORS['vehiculo_patente'], datos.vehiculo.patente)
@@ -760,7 +771,6 @@ async def crear_contrato_autotramite(datos: ContratoData, dry_run: bool = False,
         RecoverableError: Si hay problemas de red/timeouts
         AutoTramiteError: Otros errores
     """
-    import time
     inicio = time.time()
     
     logger.info('Iniciando creación de contrato', extra={
@@ -769,13 +779,20 @@ async def crear_contrato_autotramite(datos: ContratoData, dry_run: bool = False,
     })
     
     async with async_playwright() as p:
+        logger.info('Lanzando Chromium...', extra={
+            'headless': settings.playwright_headless,
+            'slow_mo': settings.playwright_slow_mo
+        })
         browser: Browser = await p.chromium.launch(
             headless=settings.playwright_headless,
-            slow_mo=settings.playwright_slow_mo
+            slow_mo=settings.playwright_slow_mo,
+            args=['--no-sandbox', '--disable-dev-shm-usage', '--disable-gpu']
         )
-        
+        logger.info('Chromium lanzado exitosamente')
+
         try:
             page: Page = await browser.new_page()
+            logger.info('Nueva pagina creada')
             
             # Login
             await ejecutar_con_reintentos(lambda: login_autotramite(page))
