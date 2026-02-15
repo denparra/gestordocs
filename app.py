@@ -172,7 +172,12 @@ def _tag_split_email(value: str):
     return user.strip().upper(), domain.strip().upper()
 
 
-def _tag_parse_text(text: str) -> dict:
+def _tag_parse_text(
+    text: str,
+    patente_override: str = '',
+    tag_override: str = '',
+    fecha_override=None,
+) -> dict:
     def find(pattern):
         match = re.search(pattern, text, flags=re.IGNORECASE | re.MULTILINE)
         return match.group(1).strip() if match else ''
@@ -182,8 +187,10 @@ def _tag_parse_text(text: str) -> dict:
     direccion_raw = find(r'^\s*Direccion\s*:\s*(.+)$')
     telefono = _tag_normalize_phone(find(r'^\s*Telefono\s*:\s*(.+)$'))
     correo = find(r'^\s*Correo\s*:\s*(.+)$')
-    patente = _tag_normalize_patente(find(r'^\s*PATENTE\s*:\s*(.+)$'))
-    tag = find(r'^\s*TAG\s*[:\-]?\s*(.+)$')
+    patente_texto = find(r'^\s*PATENTE\s*:\s*(.+)$')
+    tag_texto = find(r'^\s*TAG\s*[:\-]?\s*(.+)$')
+    patente = _tag_normalize_patente((patente_override or patente_texto).upper())
+    tag = (tag_override or tag_texto).upper()
 
     direccion_raw = direccion_raw.rstrip('.')
     if ',' in direccion_raw:
@@ -195,12 +202,12 @@ def _tag_parse_text(text: str) -> dict:
 
     email_user, email_domain = _tag_split_email(correo)
 
-    today = datetime.now()
-    dia = f"{today.day:02d}"
-    mes = TAG_MONTHS[today.month]
-    ano = f"{today.year}"
+    fecha_base = fecha_override or datetime.now().date()
+    dia = f"{fecha_base.day:02d}"
+    mes = TAG_MONTHS[fecha_base.month]
+    ano = f"{fecha_base.year}"
 
-    return {
+    mapping = {
         'CAMPO1': dia,
         'CAMPO2': mes,
         'CAMPO3': ano,
@@ -218,6 +225,8 @@ def _tag_parse_text(text: str) -> dict:
         'CAMPO15': patente,
         'CAMPO16': '',
     }
+
+    return {k: (v.upper() if isinstance(v, str) else v) for k, v in mapping.items()}
 
 
 def _tag_fill_pdf(mapping: dict, template_path: Path, output_path: Path) -> None:
@@ -779,6 +788,10 @@ if st.session_state.view == 'tag':
         st.session_state.tag_pdf_url = None
     if 'tag_upload_error' not in st.session_state:
         st.session_state.tag_upload_error = None
+    if 'tag_checklist' not in st.session_state:
+        st.session_state.tag_checklist = None
+    if 'tag_fecha_documento' not in st.session_state:
+        st.session_state.tag_fecha_documento = datetime.now().date()
 
     example_tag_text = ''
     example_path = TAG_DIR / 'testtag.md'
@@ -786,11 +799,29 @@ if st.session_state.view == 'tag':
         example_tag_text = example_path.read_text(encoding='utf-8')
 
     with st.form('tag_form'):
+        fecha_documento = st.date_input(
+            'Fecha del documento',
+            key='tag_fecha_documento',
+            help='Por defecto usa la fecha de hoy. Puedes editarla si necesitas generar el PDF con otra fecha.'
+        )
         tag_text = st.text_area(
             'Datos para Solicitud TAG',
             height=240,
             placeholder=example_tag_text or 'Nombre: ...\nRUT: ...\nDireccion: ...\nTelefono: ...\nCorreo: ...\nPATENTE: ...\nTAG ...'
         )
+        col_t1, col_t2 = st.columns(2)
+        with col_t1:
+            patente_input = st.text_input(
+                'Patente (opcional)',
+                placeholder='ABCD12-3',
+                help='Si se completa, tiene prioridad sobre PATENTE dentro del texto.'
+            )
+        with col_t2:
+            tag_input = st.text_input(
+                'Tag (opcional)',
+                placeholder='123456789',
+                help='Si se completa, tiene prioridad sobre TAG dentro del texto.'
+            )
         submit_tag = st.form_submit_button('Generar Solicitud TAG', use_container_width=True)
 
     if submit_tag:
@@ -800,6 +831,7 @@ if st.session_state.view == 'tag':
         st.session_state.tag_mapping = None
         st.session_state.tag_pdf_url = None
         st.session_state.tag_upload_error = None
+        st.session_state.tag_checklist = None
 
         if not tag_text.strip():
             st.error('Debe ingresar el texto de la solicitud.')
@@ -808,10 +840,29 @@ if st.session_state.view == 'tag':
         else:
             with st.spinner('Generando PDF...'):
                 try:
-                    mapping = _tag_parse_text(tag_text)
+                    tag_text_upper = tag_text.upper()
+                    patente_input_upper = patente_input.upper().strip()
+                    tag_input_upper = tag_input.upper().strip()
+
+                    mapping = _tag_parse_text(
+                        tag_text_upper,
+                        patente_override=patente_input_upper,
+                        tag_override=tag_input_upper,
+                        fecha_override=fecha_documento,
+                    )
+
+                    checklist = [
+                        (campo, bool(mapping.get(campo)))
+                        for campo in TAG_REQUIRED_FIELDS
+                    ]
+                    st.session_state.tag_checklist = checklist
+
                     missing = [k for k in TAG_REQUIRED_FIELDS if not mapping.get(k)]
                     if missing:
+                        logger.warning('Habilitacion Tag con campos faltantes', extra={'campos_faltantes': ','.join(missing)})
                         raise RuntimeError(f'Campos requeridos vacios: {missing}')
+
+                    logger.info('Habilitacion Tag validacion completa OK', extra={'campos_requeridos': len(TAG_REQUIRED_FIELDS)})
 
                     patente = mapping.get('CAMPO14') or 'SIN-PATENTE'
                     safe_patente = re.sub(r'[^A-Z0-9-]', '', patente.upper())
@@ -832,6 +883,15 @@ if st.session_state.view == 'tag':
 
     if st.session_state.tag_error:
         st.error(f'Error: {st.session_state.tag_error}')
+
+    if st.session_state.tag_checklist:
+        checklist_text = ' | '.join([
+            f"{'OK' if ok else 'FALTA'} {campo}"
+            for campo, ok in st.session_state.tag_checklist
+        ])
+        st.caption(f'Checklist validacion: {checklist_text}')
+        if all(ok for _, ok in st.session_state.tag_checklist):
+            st.info('✅ Todos los campos requeridos estan correctos.')
 
     if st.session_state.tag_result == 'ok' and st.session_state.tag_pdf_path:
         st.success('PDF generado correctamente.')
