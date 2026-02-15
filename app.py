@@ -798,31 +798,51 @@ if st.session_state.view == 'tag':
     if example_path.exists():
         example_tag_text = example_path.read_text(encoding='utf-8')
 
-    with st.form('tag_form'):
-        fecha_documento = st.date_input(
-            'Fecha del documento',
-            key='tag_fecha_documento',
-            help='Por defecto usa la fecha de hoy. Puedes editarla si necesitas generar el PDF con otra fecha.'
-        )
-        tag_text = st.text_area(
-            'Datos para Solicitud TAG',
-            height=240,
-            placeholder=example_tag_text or 'Nombre: ...\nRUT: ...\nDireccion: ...\nTelefono: ...\nCorreo: ...\nPATENTE: ...\nTAG ...'
-        )
-        col_t1, col_t2 = st.columns(2)
-        with col_t1:
-            patente_input = st.text_input(
-                'Patente (opcional)',
-                placeholder='ABCD12-3',
-                help='Si se completa, tiene prioridad sobre PATENTE dentro del texto.'
+    col_tag_form, col_tag_ref = st.columns([1.8, 1.2], vertical_alignment='top')
+
+    with col_tag_form:
+        with st.form('tag_form'):
+            fecha_documento = st.date_input(
+                'Fecha del documento',
+                key='tag_fecha_documento',
+                help='Por defecto usa la fecha de hoy. Puedes editarla si necesitas generar el PDF con otra fecha.'
             )
-        with col_t2:
-            tag_input = st.text_input(
-                'Tag (opcional)',
-                placeholder='123456789',
-                help='Si se completa, tiene prioridad sobre TAG dentro del texto.'
+            tag_text = st.text_area(
+                'Datos para Solicitud TAG',
+                height=240,
+                placeholder=example_tag_text or 'Nombre: ...\nRUT: ...\nDireccion: ...\nTelefono: ...\nCorreo: ...\nPATENTE: ...\nTAG ...'
             )
-        submit_tag = st.form_submit_button('Generar Solicitud TAG', use_container_width=True)
+            col_t1, col_t2 = st.columns(2)
+            with col_t1:
+                patente_input = st.text_input(
+                    'Patente (opcional)',
+                    placeholder='ABCD12-3',
+                    help='Si se completa, tiene prioridad sobre PATENTE dentro del texto.'
+                )
+            with col_t2:
+                tag_input = st.text_input(
+                    'Tag (opcional)',
+                    placeholder='123456789',
+                    help='Si se completa, tiene prioridad sobre TAG dentro del texto.'
+                )
+            submit_tag = st.form_submit_button('Generar Solicitud TAG', use_container_width=True)
+
+    with col_tag_ref:
+        st.markdown('**Referencia de formato**')
+        tab_tag_1, tab_tag_2, tab_tag_3 = st.tabs(['Ejemplo', 'Campos', 'Tips'])
+        with tab_tag_1:
+            st.code(
+                example_tag_text or 'Nombre: ...\nRUT: ...\nDireccion: ...\nTelefono: ...\nCorreo: ...\nPATENTE: ...\nTAG ...',
+                language='text'
+            )
+        with tab_tag_2:
+            st.markdown('- Nombre\n- RUT\n- Direccion\n- Telefono\n- Correo\n- Patente\n- Tag')
+        with tab_tag_3:
+            st.markdown(
+                '- Puedes dejar `PATENTE` y `TAG` en el texto o usar los campos separados.\n'
+                '- Si completas los campos separados, esos valores tienen prioridad.\n'
+                '- Todo se normaliza a mayusculas al generar el PDF.'
+            )
 
     if submit_tag:
         st.session_state.tag_result = None
@@ -1468,53 +1488,65 @@ if usa_ultimo and st.session_state.autotramite_last_contract:
     st.session_state.autotramite_venta_input = ultimo.get('venta', '')
     st.rerun()
 
-with st.form('form_contrato'):
-    texto_input = st.text_area(
-        'Datos del Contrato (CAV + Nota de Venta)',
-        height=300,
-        key='autotramite_texto_input',
-        placeholder=EJEMPLO_TEXTO,
-        help='Pegue los datos del Certificado de Anotaciones Vigentes (CAV) y la Nota de Venta'
-    )
+col_auto_form, col_auto_ref = st.columns([1.8, 1.2], vertical_alignment='top')
 
-    col_m1, col_m2 = st.columns(2)
-    with col_m1:
-        tasacion_input = st.text_input(
-            'Tasación (opcional)',
-            key='autotramite_tasacion_input',
-            placeholder='10.000.000',
-            help='Si se completa, tiene prioridad sobre TASACION dentro del bloque de texto'
-        )
-    with col_m2:
-        venta_input = st.text_input(
-            'Venta (opcional)',
-            key='autotramite_venta_input',
-            placeholder='10.000.000',
-            help='Si se completa, tiene prioridad sobre VENTA dentro del bloque de texto'
+with col_auto_form:
+    with st.form('form_contrato'):
+        texto_input = st.text_area(
+            'Datos del Contrato (CAV + Nota de Venta)',
+            height=300,
+            key='autotramite_texto_input',
+            placeholder=EJEMPLO_TEXTO,
+            help='Pegue los datos del Certificado de Anotaciones Vigentes (CAV) y la Nota de Venta'
         )
 
-    st.caption('Puedes informar TASACION y VENTA en estos campos o dentro del texto; ambos formatos son compatibles.')
+        col_m1, col_m2 = st.columns(2)
+        with col_m1:
+            tasacion_input = st.text_input(
+                'Tasación (opcional)',
+                key='autotramite_tasacion_input',
+                placeholder='10.000.000',
+                help='Si se completa, tiene prioridad sobre TASACION dentro del bloque de texto'
+            )
+        with col_m2:
+            venta_input = st.text_input(
+                'Venta (opcional)',
+                key='autotramite_venta_input',
+                placeholder='10.000.000',
+                help='Si se completa, tiene prioridad sobre VENTA dentro del bloque de texto'
+            )
 
-    checks = _estado_bloques_autotramite(texto_input, tasacion_input, venta_input)
-    st.caption('Checklist de entrada: ' + ' | '.join([f"{'OK' if ok else 'FALTA'} {nombre}" for nombre, ok in checks]))
-    
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        dry_run = st.checkbox(
-            'Modo Dry-Run (solo validar)',
-            value=False,
-            key='autotramite_dry_run',
-            help='Si está marcado, solo valida los datos sin registrar el contrato'
+        st.caption('Puedes informar TASACION y VENTA en estos campos o dentro del texto; ambos formatos son compatibles.')
+
+        checks = _estado_bloques_autotramite(texto_input, tasacion_input, venta_input)
+        st.caption('Checklist de entrada: ' + ' | '.join([f"{'OK' if ok else 'FALTA'} {nombre}" for nombre, ok in checks]))
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            dry_run = st.checkbox(
+                'Modo Dry-Run (solo validar)',
+                value=False,
+                key='autotramite_dry_run',
+                help='Si está marcado, solo valida los datos sin registrar el contrato'
+            )
+        
+        with col2:
+            submit_button = st.form_submit_button('🚀 Registrar Contrato', use_container_width=True, type='primary')
+
+with col_auto_ref:
+    st.markdown('**Referencia de formato**')
+    tab_auto_1, tab_auto_2, tab_auto_3 = st.tabs(['Ejemplo', 'Bloques', 'Tips'])
+    with tab_auto_1:
+        st.code(EJEMPLO_TEXTO, language='text')
+    with tab_auto_2:
+        st.markdown('- DATOS DEL VEHICULO\n- DATOS DEL VENDEDOR\n- DATOS DEL COMPRADOR\n- TASACION\n- VENTA')
+    with tab_auto_3:
+        st.markdown(
+            '- El orden de bloques es flexible.\n'
+            '- `Tipo Vehiculo` admite una o varias palabras (ej. `STATION WAGON`).\n'
+            '- Puedes ingresar `TASACION` y `VENTA` en campos separados o en el texto.'
         )
-    
-    with col2:
-        submit_button = st.form_submit_button('🚀 Registrar Contrato', use_container_width=True, type='primary')
-
-
-# Botón para mostrar ejemplo
-if st.button('📋 Ver Ejemplo de Formato'):
-    st.code(EJEMPLO_TEXTO, language='text')
 
 
 # Procesar formulario
