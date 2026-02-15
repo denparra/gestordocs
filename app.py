@@ -1253,6 +1253,41 @@ def _estado_bloques_autotramite(texto: str, tasacion_input: str, venta_input: st
     checks.append(('VENTA', bool(_normalizar_monto_input(venta_input) or venta_en_texto)))
     return checks
 
+
+AUTOTRAMITE_STAGES = [
+    ('boot', '🚀 Iniciando proceso', 5),
+    ('login', '🔐 Iniciando sesion en AutoTramite', 20),
+    ('login_ok', '✅ Login exitoso', 35),
+    ('form', '📝 Completando formulario', 55),
+    ('preview', '📄 Generando previsualizacion', 75),
+    ('register', '🖊️ Registrando operacion', 90),
+    ('done', '🎉 Operacion finalizada', 100),
+]
+
+
+def _detectar_stage_autotramite(linea: str) -> str | None:
+    texto = linea.lower()
+    if 'iniciando login en autotramite' in texto:
+        return 'login'
+    if 'login exitoso' in texto:
+        return 'login_ok'
+    if 'llenando formulario de contrato' in texto:
+        return 'form'
+    if 'previsualizando contrato' in texto:
+        return 'preview'
+    if 'registrando operacion' in texto:
+        return 'register'
+    if 'operación completada exitosamente' in texto or 'operacion completada exitosamente' in texto:
+        return 'done'
+    return None
+
+
+def _stage_info(stage_key: str) -> tuple[str, int]:
+    for key, label, pct in AUTOTRAMITE_STAGES:
+        if key == stage_key:
+            return label, pct
+    return AUTOTRAMITE_STAGES[0][1], AUTOTRAMITE_STAGES[0][2]
+
 # Vista AutoTramite (actual)
 if st.button('← Volver al menú', use_container_width=True):
     st.session_state.view = 'menu'
@@ -1501,90 +1536,129 @@ if st.session_state.contrato_parsed and not st.session_state.errores_validacion:
         st.subheader('3. Ejecutar Registro')
         
         if st.button('▶️ Confirmar y Ejecutar', type='primary', use_container_width=True):
-            with st.spinner(f'⚙️ {"Validando datos..." if dry_run else "Registrando contrato en AutoTramite..."}'):
-                try:
-                    # Preparar PDF local
-                    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-                    output_dir = Path(__file__).parent / 'screenshots'
-                    output_dir.mkdir(parents=True, exist_ok=True)
-                    pdf_path = output_dir / f'preview_{contrato.vehiculo.patente}_{timestamp}.pdf'
-                    st.session_state.pdf_path = str(pdf_path)
+            try:
+                # Preparar PDF local
+                timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+                output_dir = Path(__file__).parent / 'screenshots'
+                output_dir.mkdir(parents=True, exist_ok=True)
+                pdf_path = output_dir / f'preview_{contrato.vehiculo.patente}_{timestamp}.pdf'
+                st.session_state.pdf_path = str(pdf_path)
 
-                    # Guardar input para el CLI
-                    input_path = output_dir / f'input_{contrato.vehiculo.patente}_{timestamp}.txt'
-                    input_path.write_text(texto_input, encoding='utf-8')
-                    result_path = output_dir / f'result_{contrato.vehiculo.patente}_{timestamp}.json'
+                # Guardar input para el CLI
+                input_path = output_dir / f'input_{contrato.vehiculo.patente}_{timestamp}.txt'
+                input_path.write_text(texto_input, encoding='utf-8')
+                result_path = output_dir / f'result_{contrato.vehiculo.patente}_{timestamp}.json'
 
-                    cmd = [
-                        sys.executable,
-                        str(Path(__file__).parent / 'run_autotramite_cli.py'),
-                        '--input', str(input_path),
-                        '--output', str(pdf_path),
-                        '--result', str(result_path),
-                    ]
-                    if dry_run:
-                        cmd.append('--dry-run')
-                    if st.session_state.autotramite_tasacion_override:
-                        cmd.extend(['--tasacion', st.session_state.autotramite_tasacion_override])
-                    if st.session_state.autotramite_venta_override:
-                        cmd.extend(['--venta', st.session_state.autotramite_venta_override])
+                cmd = [
+                    sys.executable,
+                    str(Path(__file__).parent / 'run_autotramite_cli.py'),
+                    '--input', str(input_path),
+                    '--output', str(pdf_path),
+                    '--result', str(result_path),
+                ]
+                if dry_run:
+                    cmd.append('--dry-run')
+                if st.session_state.autotramite_tasacion_override:
+                    cmd.extend(['--tasacion', st.session_state.autotramite_tasacion_override])
+                if st.session_state.autotramite_venta_override:
+                    cmd.extend(['--venta', st.session_state.autotramite_venta_override])
 
-                    proc = subprocess.run(
-                        cmd,
-                        capture_output=True,
-                        text=False,
-                    )
+                stage_index = {stage[0]: idx for idx, stage in enumerate(AUTOTRAMITE_STAGES)}
+                stage_actual = 'boot'
+                stage_label, stage_pct = _stage_info(stage_actual)
+                status = st.status(stage_label, expanded=True)
+                progress = st.progress(stage_pct)
+                etapa_placeholder = st.empty()
+                etapa_placeholder.caption(f'Etapa actual: {stage_label}')
 
-                    stdout_raw = proc.stdout or b""
-                    stderr_raw = proc.stderr or b""
-                    stdout_text = stdout_raw.decode("utf-8", errors="replace").strip()
-                    stderr_text = stderr_raw.decode("utf-8", errors="replace").strip()
+                proc = subprocess.Popen(
+                    cmd,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.STDOUT,
+                    text=True,
+                    encoding='utf-8',
+                    errors='replace',
+                    bufsize=1,
+                )
 
-                    if result_path.exists():
+                stdout_lines: list[str] = []
+                assert proc.stdout is not None
+                for raw_line in iter(proc.stdout.readline, ''):
+                    line = raw_line.strip()
+                    if not line:
+                        continue
+                    stdout_lines.append(line)
+
+                    stage_detectada = _detectar_stage_autotramite(line)
+                    if stage_detectada and stage_index[stage_detectada] >= stage_index[stage_actual]:
+                        stage_actual = stage_detectada
+                        stage_label, stage_pct = _stage_info(stage_actual)
+                        status.update(label=stage_label, state='running', expanded=True)
+                        progress.progress(stage_pct)
+                        etapa_placeholder.caption(f'Etapa actual: {stage_label}')
+
+                proc.wait()
+                stdout_text = '\n'.join(stdout_lines).strip()
+
+                error_lines = [
+                    line for line in stdout_lines
+                    if ' - ERROR - ' in line or line.startswith('Traceback')
+                ]
+                stderr_text = '\n'.join(error_lines[-8:]).strip()
+
+                if result_path.exists():
+                    try:
+                        resultado = json.loads(result_path.read_text(encoding='utf-8').strip())
+                    except Exception:
+                        resultado = {
+                            'success': False,
+                            'error': 'Failed to parse CLI result file',
+                            'raw_output': stdout_text,
+                        }
+                elif stdout_text:
+                    # Fallback: try parse last JSON line
+                    json_line = None
+                    for line in stdout_text.splitlines()[::-1]:
+                        if line.strip().startswith('{') and line.strip().endswith('}'):
+                            json_line = line.strip()
+                            break
+                    if json_line:
                         try:
-                            resultado = json.loads(result_path.read_text(encoding="utf-8").strip())
+                            resultado = json.loads(json_line)
                         except Exception:
                             resultado = {
                                 'success': False,
-                                'error': 'Failed to parse CLI result file',
-                                'raw_output': stdout_text,
-                            }
-                    elif stdout_text:
-                        # Fallback: try parse last JSON line
-                        json_line = None
-                        for line in stdout_text.splitlines()[::-1]:
-                            if line.strip().startswith('{') and line.strip().endswith('}'):
-                                json_line = line.strip()
-                                break
-                        if json_line:
-                            try:
-                                resultado = json.loads(json_line)
-                            except Exception:
-                                resultado = {
-                                    'success': False,
-                                    'error': 'Failed to parse CLI output',
-                                    'raw_output': stdout_text,
-                                }
-                        else:
-                            resultado = {
-                                'success': False,
-                                'error': 'CLI returned no JSON',
+                                'error': 'Failed to parse CLI output',
                                 'raw_output': stdout_text,
                             }
                     else:
                         resultado = {
                             'success': False,
-                            'error': 'CLI returned no output',
-                            'raw_error': stderr_text,
+                            'error': 'CLI returned no JSON',
+                            'raw_output': stdout_text,
                         }
+                else:
+                    resultado = {
+                        'success': False,
+                        'error': 'CLI returned no output',
+                    }
 
-                    st.session_state.resultado = resultado
-                    st.session_state.cli_error = stderr_text or None
-                    st.rerun()
+                if resultado.get('success'):
+                    final_label, final_pct = _stage_info('done')
+                    progress.progress(final_pct)
+                    status.update(label=final_label, state='complete', expanded=True)
+                    etapa_placeholder.caption(f'Etapa final: {final_label}')
+                else:
+                    status.update(label='❌ Error durante la ejecucion', state='error', expanded=True)
+                    etapa_placeholder.caption(f'Ultima etapa alcanzada: {_stage_info(stage_actual)[0]}')
 
-                except Exception as e:
-                    st.error(f'❌ Error inesperado: {str(e)}')
-                    logger.error(f'Error en ejecución: {str(e)}')
+                st.session_state.resultado = resultado
+                st.session_state.cli_error = stderr_text or None
+                st.rerun()
+
+            except Exception as e:
+                st.error(f'❌ Error inesperado: {str(e)}')
+                logger.error(f'Error en ejecución: {str(e)}')
 
 
 # Mostrar resultado
