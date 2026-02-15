@@ -240,7 +240,48 @@ def separar_direccion(direccion_completa: str) -> dict[str, str]:
     }
 
 
-def parsear_texto_contrato(texto: str) -> tuple[Optional[ContratoData], List[ValidationError]]:
+def _normalizar_monto(valor: Optional[str | int]) -> Optional[int]:
+    if valor is None:
+        return None
+    if isinstance(valor, int):
+        return valor
+
+    limpio = re.sub(r'[^0-9]', '', str(valor))
+    if not limpio:
+        return None
+    return int(limpio)
+
+
+def _extraer_bloque(texto: str, encabezados: list[str], todos_encabezados: list[str]) -> Optional[str]:
+    union_encabezados = '|'.join(f'(?:{h})' for h in todos_encabezados)
+
+    for encabezado in encabezados:
+        match = re.search(fr'(?im)^\s*(?:{encabezado})\b', texto)
+        if not match:
+            continue
+
+        inicio = match.end()
+        resto = texto[inicio:]
+        siguiente = re.search(fr'(?im)^\s*(?:{union_encabezados})\b', resto)
+        if siguiente:
+            return resto[:siguiente.start()].strip()
+        return resto.strip()
+
+    return None
+
+
+def _extraer_monto(texto: str, etiqueta: str) -> Optional[int]:
+    valor = extraer(texto, fr'(?im)^\s*{etiqueta}\s*:?\s*\$?\s*([0-9.]+)\s*$')
+    if valor is None:
+        valor = extraer(texto, fr'\b{etiqueta}\b\s*:?\s*\$?\s*([0-9.]+)')
+    return _normalizar_monto(valor)
+
+
+def parsear_texto_contrato(
+    texto: str,
+    tasacion_override: Optional[str | int] = None,
+    venta_override: Optional[str | int] = None,
+) -> tuple[Optional[ContratoData], List[ValidationError]]:
     """
     Parsea texto estructurado de CAV + Nota de Venta
     
@@ -271,14 +312,37 @@ def parsear_texto_contrato(texto: str) -> tuple[Optional[ContratoData], List[Val
         patente_dv = inscripcion_match.group(2).upper()
         patente = limpiar_patente(patente_raw)
         
+        # ============ BLOQUES (orden flexible) ============
+        encabezados_vehiculo = [r'DATOS\s+(?:DEL\s+)?VEH[IÍ]CULO']
+        encabezados_vendedor = [r'DATOS\s+(?:DEL\s+)?VENDEDOR', r'DATOS\s+PROPIETARIO']
+        encabezados_comprador = [r'DATOS\s+(?:DEL\s+)?COMPRADOR', r'DATOS\s+COMPRADOR']
+        todos_encabezados = encabezados_vehiculo + encabezados_vendedor + encabezados_comprador
+
+        bloque_vehiculo = _extraer_bloque(texto, encabezados_vehiculo, todos_encabezados)
+        bloque_vendedor = _extraer_bloque(texto, encabezados_vendedor, todos_encabezados)
+        bloque_comprador = _extraer_bloque(texto, encabezados_comprador, todos_encabezados)
+
+        if not bloque_vehiculo:
+            errores.append(ValidationError(campo='vehiculo', mensaje='Bloque DATOS DEL VEHICULO no encontrado'))
+            return None, errores
+        if not bloque_vendedor:
+            errores.append(ValidationError(campo='vendedor', mensaje='Bloque DATOS DEL VENDEDOR no encontrado'))
+            return None, errores
+        if not bloque_comprador:
+            errores.append(ValidationError(campo='comprador', mensaje='Bloque DATOS DEL COMPRADOR no encontrado'))
+            return None, errores
+
         # ============ VEHICULO ============
-        tipo_vehiculo = extraer(texto, r'Tipo Veh[ií]culo\s*:\s*(\w+)') or 'AUTOMOVIL'
-        ano_str = extraer(texto, r'A[ñn]o\s*:\s*(\d{4})')
-        marca = extraer(texto, r'Marca\s*:\s*(.+?)(?:\n|$)')
-        modelo = extraer(texto, r'Modelo\s*:\s*(.+?)(?:\n|$)')
-        motor = extraer(texto, r'Nro\.\s*Motor\s*:\s*(\S+)')
-        chasis = extraer(texto, r'Nro\.\s*(?:Chasis|Vin)\s*:\s*(\S+)')
-        color = extraer(texto, r'Color\s*:\s*(\w+)') or 'SIN ESPECIFICAR'
+        tipo_vehiculo = extraer(
+            bloque_vehiculo,
+            r'Tipo\s+Veh[ií]culo\s*:\s*(.+?)(?=\s+A[ñn]o\s*:|\n|$)'
+        ) or 'AUTOMOVIL'
+        ano_str = extraer(bloque_vehiculo, r'A[ñn]o\s*:\s*(\d{4})')
+        marca = extraer(bloque_vehiculo, r'Marca\s*:\s*(.+?)(?:\n|$)')
+        modelo = extraer(bloque_vehiculo, r'Modelo\s*:\s*(.+?)(?:\n|$)')
+        motor = extraer(bloque_vehiculo, r'Nro\.\s*Motor\s*:\s*(\S+)')
+        chasis = extraer(bloque_vehiculo, r'Nro\.\s*(?:Chasis|Vin)\s*:\s*(\S+)')
+        color = extraer(bloque_vehiculo, r'Color\s*:\s*(.+?)(?:\n|$)') or 'SIN ESPECIFICAR'
         
         # Validar campos requeridos vehículo
         if not ano_str:
@@ -305,23 +369,22 @@ def parsear_texto_contrato(texto: str) -> tuple[Optional[ContratoData], List[Val
         ano = int(ano_str)
         
         # ============ TASACION Y VENTA ============
-        tasacion_str = extraer(texto, r'TASACION\s*([0-9.]+)')
-        tasacion = int(tasacion_str.replace('.', '')) if tasacion_str else None
-        
-        venta_str = extraer(texto, r'VENTA\s*([0-9.]+)')
-        if not venta_str:
+        tasacion = _normalizar_monto(tasacion_override)
+        if tasacion is None:
+            tasacion = _extraer_monto(texto, r'TASACI(?:O|Ó)N')
+
+        valor_venta = _normalizar_monto(venta_override)
+        if valor_venta is None:
+            valor_venta = _extraer_monto(texto, r'VENTA')
+
+        if valor_venta is None:
             errores.append(ValidationError(campo='venta', mensaje='Valor de venta no encontrado'))
             return None, errores
-        
-        valor_venta = int(venta_str.replace('.', ''))
-        
-        # ============ VENDEDOR ============
-        seccion_vendedor = r'DATOS\s+(?:DEL\s+)?VENDEDOR'
-        seccion_comprador = r'DATOS\s+(?:DEL\s+)?COMPRADOR'
 
+        # ============ VENDEDOR ============
         nombre_vendedor = extraer(
-            texto,
-            fr'{seccion_vendedor}[\s\S]*?Nombre\s*:\s*(.+?)(?:\n|R\.?U\.?(?:T|N)\.?)'
+            bloque_vendedor,
+            r'Nombre\s*:\s*(.+?)(?:\n|R\.?U\.?(?:T|N)\.?)'
         )
         if not nombre_vendedor:
             errores.append(ValidationError(campo='vendedor_nombre', mensaje='Nombre del vendedor no encontrado'))
@@ -330,8 +393,8 @@ def parsear_texto_contrato(texto: str) -> tuple[Optional[ContratoData], List[Val
         partes_vendedor = separar_nombre(nombre_vendedor.strip())
         
         rut_vendedor_raw = extraer(
-            texto,
-            fr'{seccion_vendedor}[\s\S]*?R\.?U\.?(?:T|N)\.?\s*:\s*([0-9Kk.-]+)'
+            bloque_vendedor,
+            r'R\.?U\.?(?:T|N)\.?\s*:\s*([0-9Kk.-]+)'
         )
         if not rut_vendedor_raw:
             errores.append(ValidationError(campo='vendedor_rut', mensaje='RUT del vendedor no encontrado'))
@@ -340,8 +403,8 @@ def parsear_texto_contrato(texto: str) -> tuple[Optional[ContratoData], List[Val
         rut_vendedor = formatear_rut(rut_vendedor_raw)
         
         dir_vendedor_raw = extraer(
-            texto,
-            fr'{seccion_vendedor}[\s\S]*?Direcci[oó]n\s*:\s*(.+?)(?:\n|Tel[eé]fono)'
+            bloque_vendedor,
+            r'Direcci[oó]n\s*:\s*(.+?)(?:\n|Tel[eé]fono|Correo|Email|$)'
         )
         if not dir_vendedor_raw:
             errores.append(ValidationError(campo='vendedor_direccion', mensaje='Dirección del vendedor no encontrada'))
@@ -350,16 +413,16 @@ def parsear_texto_contrato(texto: str) -> tuple[Optional[ContratoData], List[Val
         dir_vendedor = separar_direccion(dir_vendedor_raw)
         
         tel_vendedor = extraer(
-            texto,
-            fr'{seccion_vendedor}[\s\S]*?Tel[eé]fono\s*:\s*(\d+)'
+            bloque_vendedor,
+            r'Tel[eé]fono\s*:\s*(\d+)'
         )
         if not tel_vendedor:
             errores.append(ValidationError(campo='vendedor_telefono', mensaje='Teléfono del vendedor no encontrado'))
             return None, errores
         
         email_vendedor = extraer(
-            texto,
-            fr'{seccion_vendedor}[\s\S]*?Correo\s*:\s*(\S+@\S+)'
+            bloque_vendedor,
+            r'(?:Correo|Email)\s*:\s*(\S+@\S+)'
         )
         if not email_vendedor:
             errores.append(ValidationError(campo='vendedor_email', mensaje='Email del vendedor no encontrado'))
@@ -367,8 +430,8 @@ def parsear_texto_contrato(texto: str) -> tuple[Optional[ContratoData], List[Val
         
         # ============ COMPRADOR ============
         nombre_comprador = extraer(
-            texto,
-            fr'{seccion_comprador}[\s\S]*?Nombre\s*:\s*(.+?)(?:\n|R\.?U\.?(?:T|N)\.?)'
+            bloque_comprador,
+            r'Nombre\s*:\s*(.+?)(?:\n|R\.?U\.?(?:T|N)\.?)'
         )
         if not nombre_comprador:
             errores.append(ValidationError(campo='comprador_nombre', mensaje='Nombre del comprador no encontrado'))
@@ -377,8 +440,8 @@ def parsear_texto_contrato(texto: str) -> tuple[Optional[ContratoData], List[Val
         partes_comprador = separar_nombre(nombre_comprador.strip())
         
         rut_comprador_raw = extraer(
-            texto,
-            fr'{seccion_comprador}[\s\S]*?R\.?U\.?(?:T|N)\.?\s*:\s*([0-9Kk.-]+)'
+            bloque_comprador,
+            r'R\.?U\.?(?:T|N)\.?\s*:\s*([0-9Kk.-]+)'
         )
         if not rut_comprador_raw:
             errores.append(ValidationError(campo='comprador_rut', mensaje='RUT del comprador no encontrado'))
@@ -387,8 +450,8 @@ def parsear_texto_contrato(texto: str) -> tuple[Optional[ContratoData], List[Val
         rut_comprador = formatear_rut(rut_comprador_raw)
         
         dir_comprador_raw = extraer(
-            texto,
-            fr'{seccion_comprador}[\s\S]*?Direcci[oó]n\s*:\s*(.+?)(?:\n|Tel[eé]fono)'
+            bloque_comprador,
+            r'Direcci[oó]n\s*:\s*(.+?)(?:\n|Tel[eé]fono|Correo|Email|$)'
         )
         if not dir_comprador_raw:
             errores.append(ValidationError(campo='comprador_direccion', mensaje='Dirección del comprador no encontrada'))
@@ -397,16 +460,16 @@ def parsear_texto_contrato(texto: str) -> tuple[Optional[ContratoData], List[Val
         dir_comprador = separar_direccion(dir_comprador_raw)
         
         tel_comprador = extraer(
-            texto,
-            fr'{seccion_comprador}[\s\S]*?Tel[eé]fono\s*:\s*(\d+)'
+            bloque_comprador,
+            r'Tel[eé]fono\s*:\s*(\d+)'
         )
         if not tel_comprador:
             errores.append(ValidationError(campo='comprador_telefono', mensaje='Teléfono del comprador no encontrado'))
             return None, errores
         
         email_comprador = extraer(
-            texto,
-            fr'{seccion_comprador}[\s\S]*?Correo\s*:\s*(\S+@\S+)'
+            bloque_comprador,
+            r'(?:Correo|Email)\s*:\s*(\S+@\S+)'
         )
         if not email_comprador:
             errores.append(ValidationError(campo='comprador_email', mensaje='Email del comprador no encontrado'))

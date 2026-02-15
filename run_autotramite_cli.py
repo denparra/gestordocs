@@ -33,6 +33,8 @@ def main() -> int:
     parser.add_argument("--output", required=True, help="Path to output PDF.")
     parser.add_argument("--dry-run", action="store_true", help="Validate only.")
     parser.add_argument("--result", help="Path to write JSON result.")
+    parser.add_argument("--tasacion", help="Tasacion override (optional).")
+    parser.add_argument("--venta", help="Venta override (optional).")
     args = parser.parse_args()
 
     input_path = Path(args.input)
@@ -63,7 +65,11 @@ def main() -> int:
         }, result_path)
         return 2
 
-    contrato, errores = parsear_texto_contrato(texto)
+    contrato, errores = parsear_texto_contrato(
+        texto,
+        tasacion_override=args.tasacion,
+        venta_override=args.venta,
+    )
     if errores:
         _emit_result({
             "success": False,

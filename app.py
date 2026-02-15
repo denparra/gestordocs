@@ -1233,6 +1233,26 @@ Fec. adquisición: 07-05-2018''',
 
     st.stop()
 
+
+def _normalizar_monto_input(valor: str) -> str | None:
+    limpio = re.sub(r'[^0-9]', '', (valor or '').strip())
+    return limpio or None
+
+
+def _estado_bloques_autotramite(texto: str, tasacion_input: str, venta_input: str) -> list[tuple[str, bool]]:
+    checks = [
+        ('DATOS DEL VEHICULO', bool(re.search(r'(?im)^\s*DATOS\s+(?:DEL\s+)?VEH[IÍ]CULO\b', texto))),
+        ('DATOS DEL VENDEDOR', bool(re.search(r'(?im)^\s*DATOS\s+(?:DEL\s+)?VENDEDOR\b', texto))),
+        ('DATOS DEL COMPRADOR', bool(re.search(r'(?im)^\s*DATOS\s+(?:DEL\s+)?COMPRADOR\b', texto))),
+    ]
+
+    tasacion_en_texto = bool(re.search(r'(?im)^\s*TASACI(?:O|Ó)N\b', texto))
+    venta_en_texto = bool(re.search(r'(?im)^\s*VENTA\b', texto))
+
+    checks.append(('TASACION', bool(_normalizar_monto_input(tasacion_input) or tasacion_en_texto)))
+    checks.append(('VENTA', bool(_normalizar_monto_input(venta_input) or venta_en_texto)))
+    return checks
+
 # Vista AutoTramite (actual)
 if st.button('← Volver al menú', use_container_width=True):
     st.session_state.view = 'menu'
@@ -1305,18 +1325,83 @@ if 'autotramite_pdf_url' not in st.session_state:
     st.session_state.autotramite_pdf_url = None
 if 'autotramite_upload_error' not in st.session_state:
     st.session_state.autotramite_upload_error = None
+if 'autotramite_draft' not in st.session_state:
+    st.session_state.autotramite_draft = {'texto': '', 'tasacion': '', 'venta': ''}
+if 'autotramite_last_contract' not in st.session_state:
+    st.session_state.autotramite_last_contract = None
+if 'autotramite_tasacion_override' not in st.session_state:
+    st.session_state.autotramite_tasacion_override = None
+if 'autotramite_venta_override' not in st.session_state:
+    st.session_state.autotramite_venta_override = None
+
+if 'autotramite_texto_input' not in st.session_state:
+    st.session_state.autotramite_texto_input = st.session_state.autotramite_draft.get('texto', '')
+if 'autotramite_tasacion_input' not in st.session_state:
+    st.session_state.autotramite_tasacion_input = st.session_state.autotramite_draft.get('tasacion', '')
+if 'autotramite_venta_input' not in st.session_state:
+    st.session_state.autotramite_venta_input = st.session_state.autotramite_draft.get('venta', '')
 
 
 # Formulario principal
 st.subheader('1. Ingresar Datos del Contrato')
 
+col_b1, col_b2, col_b3 = st.columns(3)
+with col_b1:
+    if st.button('💾 Guardar borrador', use_container_width=True):
+        st.session_state.autotramite_draft = {
+            'texto': st.session_state.get('autotramite_texto_input', ''),
+            'tasacion': st.session_state.get('autotramite_tasacion_input', ''),
+            'venta': st.session_state.get('autotramite_venta_input', ''),
+        }
+        st.success('Borrador guardado.')
+
+with col_b2:
+    if st.button('♻️ Restaurar borrador', use_container_width=True):
+        draft = st.session_state.autotramite_draft
+        st.session_state.autotramite_texto_input = draft.get('texto', '')
+        st.session_state.autotramite_tasacion_input = draft.get('tasacion', '')
+        st.session_state.autotramite_venta_input = draft.get('venta', '')
+        st.rerun()
+
+with col_b3:
+    usa_ultimo = st.button('📌 Usar ultimo contrato', use_container_width=True)
+
+if usa_ultimo and st.session_state.autotramite_last_contract:
+    ultimo = st.session_state.autotramite_last_contract
+    st.session_state.autotramite_texto_input = ultimo.get('texto', '')
+    st.session_state.autotramite_tasacion_input = ultimo.get('tasacion', '')
+    st.session_state.autotramite_venta_input = ultimo.get('venta', '')
+    st.rerun()
+
 with st.form('form_contrato'):
     texto_input = st.text_area(
         'Datos del Contrato (CAV + Nota de Venta)',
         height=300,
+        key='autotramite_texto_input',
         placeholder=EJEMPLO_TEXTO,
         help='Pegue los datos del Certificado de Anotaciones Vigentes (CAV) y la Nota de Venta'
     )
+
+    col_m1, col_m2 = st.columns(2)
+    with col_m1:
+        tasacion_input = st.text_input(
+            'Tasación (opcional)',
+            key='autotramite_tasacion_input',
+            placeholder='10.000.000',
+            help='Si se completa, tiene prioridad sobre TASACION dentro del bloque de texto'
+        )
+    with col_m2:
+        venta_input = st.text_input(
+            'Venta (opcional)',
+            key='autotramite_venta_input',
+            placeholder='10.000.000',
+            help='Si se completa, tiene prioridad sobre VENTA dentro del bloque de texto'
+        )
+
+    st.caption('Puedes informar TASACION y VENTA en estos campos o dentro del texto; ambos formatos son compatibles.')
+
+    checks = _estado_bloques_autotramite(texto_input, tasacion_input, venta_input)
+    st.caption('Checklist de entrada: ' + ' | '.join([f"{'OK' if ok else 'FALTA'} {nombre}" for nombre, ok in checks]))
     
     col1, col2 = st.columns(2)
     
@@ -1324,6 +1409,7 @@ with st.form('form_contrato'):
         dry_run = st.checkbox(
             'Modo Dry-Run (solo validar)',
             value=False,
+            key='autotramite_dry_run',
             help='Si está marcado, solo valida los datos sin registrar el contrato'
         )
     
@@ -1347,15 +1433,33 @@ if submit_button:
         st.session_state.contrato_parsed = None
         st.session_state.autotramite_pdf_url = None
         st.session_state.autotramite_upload_error = None
+        st.session_state.autotramite_tasacion_override = None
+        st.session_state.autotramite_venta_override = None
+        st.session_state.autotramite_draft = {
+            'texto': texto_input,
+            'tasacion': tasacion_input,
+            'venta': venta_input,
+        }
         
         # Paso 1: Parsear texto
         with st.spinner('📝 Parseando datos...'):
-            contrato, errores = parsear_texto_contrato(texto_input)
+            contrato, errores = parsear_texto_contrato(
+                texto_input,
+                tasacion_override=tasacion_input,
+                venta_override=venta_input,
+            )
             
             if errores:
                 st.session_state.errores_validacion = errores
             else:
                 st.session_state.contrato_parsed = contrato
+                st.session_state.autotramite_tasacion_override = _normalizar_monto_input(tasacion_input)
+                st.session_state.autotramite_venta_override = _normalizar_monto_input(venta_input)
+                st.session_state.autotramite_last_contract = {
+                    'texto': texto_input,
+                    'tasacion': tasacion_input,
+                    'venta': venta_input,
+                }
 
 
 # Mostrar errores de validación
@@ -1370,7 +1474,8 @@ if st.session_state.errores_validacion:
 
 # Mostrar datos parseados y ejecutar
 if st.session_state.contrato_parsed and not st.session_state.errores_validacion:
-    contrato: ContratoData = st.session_state.contrato_parsed
+    contrato = st.session_state.contrato_parsed
+    assert contrato is not None
     
     st.success('✅ Datos validados correctamente')
     
@@ -1419,6 +1524,10 @@ if st.session_state.contrato_parsed and not st.session_state.errores_validacion:
                     ]
                     if dry_run:
                         cmd.append('--dry-run')
+                    if st.session_state.autotramite_tasacion_override:
+                        cmd.extend(['--tasacion', st.session_state.autotramite_tasacion_override])
+                    if st.session_state.autotramite_venta_override:
+                        cmd.extend(['--venta', st.session_state.autotramite_venta_override])
 
                     proc = subprocess.run(
                         cmd,
