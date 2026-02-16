@@ -91,3 +91,20 @@ def test_venta_desde_override_cuando_no_viene_en_texto():
     assert not errores
     assert contrato is not None
     assert contrato.valor_venta == 9400000
+
+
+def test_normaliza_motor_y_chasis_fraccionados_en_dos_bloques():
+    texto = _texto_base().replace(
+        'Nro. Motor : G4FGBU380448',
+        'Nro. Motor : SJNFBAJ11 NA992989'
+    ).replace(
+        'Nro. Chasis : KMHDH41CACU327103',
+        'Nro. Chasis : LSGSA58M4 DY101211'
+    )
+
+    contrato, errores = parsear_texto_contrato(texto)
+
+    assert not errores
+    assert contrato is not None
+    assert contrato.vehiculo.motor == 'SJNFBAJ11NA992989'
+    assert contrato.vehiculo.chasis == 'LSGSA58M4DY101211'

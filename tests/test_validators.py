@@ -95,12 +95,15 @@ class TestValidarTelefono:
     
     def test_telefono_con_espacios(self):
         assert validar_telefono('9 1234 5678') == True
+
+    def test_telefono_whatsapp_extranjero(self):
+        assert validar_telefono('61415264522') == True
     
     def test_telefono_muy_corto(self):
         assert validar_telefono('123') == False
     
     def test_telefono_muy_largo(self):
-        assert validar_telefono('12345678901') == False
+        assert validar_telefono('1234567890123456') == False
 
 
 class TestFormatearTelefono:

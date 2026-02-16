@@ -21,7 +21,7 @@ class DatosPersona(BaseModel):
     direccion: str = Field(..., description='Dirección completa')
     comuna: str = Field(..., description='Comuna')
     ciudad: str = Field(..., description='Ciudad')
-    telefono: str = Field(..., description='Teléfono 8-9 dígitos')
+    telefono: str = Field(..., description='Teléfono 8-15 dígitos')
     email: str = Field(..., description='Email válido')
     
     @field_validator('rut')
@@ -252,6 +252,14 @@ def _normalizar_monto(valor: Optional[str | int]) -> Optional[int]:
     return int(limpio)
 
 
+def _normalizar_identificador_vehiculo(valor: Optional[str]) -> Optional[str]:
+    if valor is None:
+        return None
+
+    normalizado = re.sub(r'\s+', '', valor)
+    return normalizado or None
+
+
 def _extraer_bloque(texto: str, encabezados: list[str], todos_encabezados: list[str]) -> Optional[str]:
     union_encabezados = '|'.join(f'(?:{h})' for h in todos_encabezados)
 
@@ -340,8 +348,12 @@ def parsear_texto_contrato(
         ano_str = extraer(bloque_vehiculo, r'A[ñn]o\s*:\s*(\d{4})')
         marca = extraer(bloque_vehiculo, r'Marca\s*:\s*(.+?)(?:\n|$)')
         modelo = extraer(bloque_vehiculo, r'Modelo\s*:\s*(.+?)(?:\n|$)')
-        motor = extraer(bloque_vehiculo, r'Nro\.\s*Motor\s*:\s*(\S+)')
-        chasis = extraer(bloque_vehiculo, r'Nro\.\s*(?:Chasis|Vin)\s*:\s*(\S+)')
+        motor = _normalizar_identificador_vehiculo(
+            extraer(bloque_vehiculo, r'Nro\.\s*Motor\s*:\s*([^\n\r]+)')
+        )
+        chasis = _normalizar_identificador_vehiculo(
+            extraer(bloque_vehiculo, r'Nro\.\s*(?:Chasis|Vin)\s*:\s*([^\n\r]+)')
+        )
         color = extraer(bloque_vehiculo, r'Color\s*:\s*(.+?)(?:\n|$)') or 'SIN ESPECIFICAR'
         
         # Validar campos requeridos vehículo

@@ -160,18 +160,20 @@ def validar_email(email: str) -> bool:
 
 def validar_telefono(telefono: str) -> bool:
     """
-    Valida teléfono chileno (8-9 dígitos)
+    Valida teléfono nacional o internacional (8-15 dígitos)
     
     Args:
-        telefono: Teléfono a validar (ej: "912345678")
+        telefono: Teléfono a validar (ej: "912345678" o "61415264522")
     
     Returns:
-        bool: True si tiene 8-9 dígitos
+        bool: True si tiene entre 8 y 15 dígitos
     
     Examples:
         >>> validar_telefono('912345678')
         True
         >>> validar_telefono('22334455')
+        True
+        >>> validar_telefono('61415264522')
         True
         >>> validar_telefono('123')
         False
@@ -182,8 +184,8 @@ def validar_telefono(telefono: str) -> bool:
     # Limpiar: solo dígitos
     clean = re.sub(r'[^0-9]', '', telefono)
     
-    # Debe tener 8 o 9 dígitos
-    return len(clean) in (8, 9)
+    # Debe tener entre 8 y 15 dígitos (E.164 max 15)
+    return 8 <= len(clean) <= 15
 
 
 def formatear_telefono(telefono: str) -> str:
