@@ -204,7 +204,7 @@ def parsear_ficha_registro(texto: str) -> dict | None:
     modelo = buscar(r'Modelo\s*:\s*(.+?)(?:\r?\n|$)')
     anio = buscar(r'A[ñn]o\s*:\s*(\d{4})')
     nombre = buscar(r'Nombre\s*:\s*(.+?)(?:\r?\n|$)')
-    run = buscar(r'R\.?U\.?N\.?\s*:\s*(.+?)(?:\r?\n|$)')
+    run = buscar(r'R\.?U\.?(?:N|T)\.?\s*:\s*(.+?)(?:\r?\n|$)')
     fec_adquisicion = buscar(r'Fec\.?\s*adquisici[oó]n\s*:?\s*(.+?)(?:\r?\n|$)')
 
     # Validar campos obligatorios
